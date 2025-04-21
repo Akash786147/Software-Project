@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance | Course Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="BMU Logo">
+            <span>BMU Admin</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="courses.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="faculty.html" class="nav-link">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Faculty</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="students.html" class="nav-link">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="attendance.html" class="nav-link active">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="results.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Results</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Attendance</h1>
+            <div class="notification-area">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="message-icon">
+                    <i class="fas fa-comment"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Selection Section -->
+        <div class="content-panel" style="margin-bottom: 20px; padding: 15px;">
+            <h2>Attendance Management</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label for="courseSelect">Select Course</label>
+                    <select id="courseSelect" class="form-control">
+                        <option value="">Select Course</option>
+                        <option value="CSE2709">CSE2709 - COA</option>
+                        <option value="CSE3005">CSE3005 - SE</option>
+                        <option value="CSE3709">CSE3709 - MAD</option>
+                        <option value="PSP2709">PSP2709 - Design Thinking</option>
+                        <option value="CSE2032">CSE2032 - Machine Learning</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <label for="dateSelect">Select Date</label>
+                    <input type="date" id="dateSelect" class="form-control" value="2023-10-15">
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <label for="sessionSelect">Select Session</label>
+                    <select id="sessionSelect" class="form-control">
+                        <option value="">Select Session</option>
+                        <option value="Morning">Morning (9:00 AM - 12:00 PM)</option>
+                        <option value="Afternoon">Afternoon (1:00 PM - 4:00 PM)</option>
+                        <option value="Evening">Evening (4:30 PM - 7:30 PM)</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: flex-end; min-width: 120px;">
+                    <button class="btn btn-primary" id="loadAttendanceBtn">
+                        <i class="fas fa-sync-alt"></i> Load
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Sheet Section -->
+        <div class="content-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2>Machine Learning (CSE2032) - Attendance Sheet</h2>
+                <span>Date: October 15, 2023 | Session: Morning</span>
+            </div>
+            <table class="data-table" id="attendanceTable">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">
+                            <input type="checkbox" id="selectAll">
+                        </th>
+                        <th>ID</th>
+                        <th>Student Name</th>
+                        <th>Status</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="student-check" checked>
+                        </td>
+                        <td>STU001</td>
+                        <td>Akash Sharma</td>
+                        <td>
+                            <select class="form-control">
+                                <option value="present" selected>Present</option>
+                                <option value="absent">Absent</option>
+                                <option value="late">Late</option>
+                                <option value="excused">Excused</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" placeholder="Add comment...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="student-check" checked>
+                        </td>
+                        <td>STU002</td>
+                        <td>Akshit Patel</td>
+                        <td>
+                            <select class="form-control">
+                                <option value="present" selected>Present</option>
+                                <option value="absent">Absent</option>
+                                <option value="late">Late</option>
+                                <option value="excused">Excused</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" placeholder="Add comment...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="student-check">
+                        </td>
+                        <td>STU003</td>
+                        <td>Palak Gupta</td>
+                        <td>
+                            <select class="form-control">
+                                <option value="present">Present</option>
+                                <option value="absent" selected>Absent</option>
+                                <option value="late">Late</option>
+                                <option value="excused">Excused</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" value="Informed absence due to health issue" placeholder="Add comment...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="student-check" checked>
+                        </td>
+                        <td>STU004</td>
+                        <td>Ketan Mishra</td>
+                        <td>
+                            <select class="form-control">
+                                <option value="present">Present</option>
+                                <option value="absent">Absent</option>
+                                <option value="late" selected>Late</option>
+                                <option value="excused">Excused</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" value="Arrived 15 minutes late" placeholder="Add comment...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="student-check" checked>
+                        </td>
+                        <td>STU005</td>
+                        <td>Rahul Singh</td>
+                        <td>
+                            <select class="form-control">
+                                <option value="present" selected>Present</option>
+                                <option value="absent">Absent</option>
+                                <option value="late">Late</option>
+                                <option value="excused">Excused</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" placeholder="Add comment...">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+                <div>
+                    <button class="btn btn-primary" id="saveAttendanceBtn">
+                        <i class="fas fa-save"></i> Save Attendance
+                    </button>
+                    <button class="btn btn-primary" style="margin-left: 10px;" id="exportAttendanceBtn">
+                        <i class="fas fa-file-export"></i> Export
+                    </button>
+                </div>
+                <div>
+                    <span><strong>Present:</strong> 3</span>
+                    <span style="margin-left: 15px;"><strong>Absent:</strong> 1</span>
+                    <span style="margin-left: 15px;"><strong>Late:</strong> 1</span>
+                    <span style="margin-left: 15px;"><strong>Total:</strong> 5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Reports Section -->
+        <div class="content-panel" style="margin-top: 20px;">
+            <h2>Attendance Reports</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3 class="card-title">ML Attendance</h3>
+                    <p class="card-text">85%</p>
+                    <p>20 Sessions</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">SE Attendance</h3>
+                    <p class="card-text">92%</p>
+                    <p>25 Sessions</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">MAD Attendance</h3>
+                    <p class="card-text">78%</p>
+                    <p>15 Sessions</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">COA Attendance</h3>
+                    <p class="card-text">88%</p>
+                    <p>22 Sessions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all functionality
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const studentCheckboxes = document.querySelectorAll('.student-check');
+            
+            selectAllCheckbox.addEventListener('change', function() {
+                studentCheckboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                    
+                    // Also update the status dropdown if checkbox is checked/unchecked
+                    const statusSelect = checkbox.closest('tr').querySelector('select');
+                    if (checkbox.checked && statusSelect.value === 'absent') {
+                        statusSelect.value = 'present';
+                    } else if (!checkbox.checked && statusSelect.value === 'present') {
+                        statusSelect.value = 'absent';
+                    }
+                });
+            });
+            
+            // Update checkbox when status changes
+            const statusSelects = document.querySelectorAll('#attendanceTable select');
+            statusSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const checkbox = select.closest('tr').querySelector('.student-check');
+                    if (select.value === 'present' || select.value === 'late') {
+                        checkbox.checked = true;
+                    } else if (select.value === 'absent') {
+                        checkbox.checked = false;
+                    }
+                });
+            });
+            
+            // Save attendance button
+            document.getElementById('saveAttendanceBtn').addEventListener('click', function() {
+                alert('Attendance saved successfully!');
+            });
+            
+            // Export attendance button
+            document.getElementById('exportAttendanceBtn').addEventListener('click', function() {
+                alert('Attendance exported successfully!');
+            });
+            
+            // Load attendance button
+            document.getElementById('loadAttendanceBtn').addEventListener('click', function() {
+                const course = document.getElementById('courseSelect').value;
+                const date = document.getElementById('dateSelect').value;
+                const session = document.getElementById('sessionSelect').value;
+                
+                if (!course || !date || !session) {
+                    alert('Please select course, date and session to load attendance.');
+                    return;
+                }
+                
+                // Here you would typically load attendance data from the server
+                alert(`Loading attendance for ${course} on ${date} (${session} session)`);
+            });
+        });
+    </script>
+</body>
+</html> 
