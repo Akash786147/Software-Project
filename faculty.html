@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faculty | Course Management System</title>
+    <title>Faculty Management | Course Management System</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -12,16 +12,15 @@
     <div class="sidebar">
         <div class="logo-container">
             <img src="images/logo.png" alt="BMU Logo">
-            <span>BMU Admin</span>
         </div>
         
         <ul class="nav-menu">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="index.html" class="nav-link">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a href="courses.html" class="nav-link">
                     <i class="fas fa-book"></i>
@@ -58,18 +57,28 @@
     <!-- Main Content Area -->
     <div class="main-content">
         <div class="header">
-            <h1 class="page-title">Faculty</h1>
-            <div class="notification-area">
+            <h1 class="page-title">Faculty Management</h1>
+            <!-- <div class="notification-area">
                 <div class="notification-icon">
                     <i class="fas fa-bell"></i>
                 </div>
                 <div class="message-icon">
                     <i class="fas fa-comment"></i>
                 </div>
-            </div>
+            </div> -->
         </div>
 
-        <!-- Search and Filter Section -->
+        <!-- Faculty Actions -->
+        <div style="text-align: right; margin-bottom: 20px;">
+            <button class="btn btn-primary" data-modal="addFacultyModal">
+                <i class="fas fa-plus"></i> Create Teacher
+            </button>
+            <button class="btn btn-primary" style="margin-left: 10px;" data-modal="assignCourseModal">
+                <i class="fas fa-tasks"></i> Assign Course
+            </button>
+        </div>
+
+        <!-- Faculty Search -->
         <div class="content-panel" style="margin-bottom: 20px; padding: 15px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; width: 60%;">
@@ -78,15 +87,10 @@
                         <i class="fas fa-search"></i> Search
                     </button>
                 </div>
-                <div>
-                    <button class="btn btn-primary" data-modal="addFacultyModal">
-                        <i class="fas fa-plus"></i> Add New Faculty
-                    </button>
-                </div>
             </div>
         </div>
 
-        <!-- Faculty List Section -->
+        <!-- Faculty List -->
         <div class="content-panel">
             <h2>Faculty Members</h2>
             <table class="data-table" id="facultyTable">
@@ -97,27 +101,29 @@
                         <th>Department</th>
                         <th>Designation</th>
                         <th>Email</th>
-                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <!-- <tbody>
                     <tr>
                         <td>FAC001</td>
                         <td>Dr. Satyendr Singh</td>
                         <td>Computer Science</td>
                         <td>Associate Professor</td>
                         <td>satyendr.singh@bmu.edu</td>
-                        <td><span class="status submitted">Active</span></td>
+                        
                         <td>
-                            <button class="action-btn" title="View Details">
+                            <button class="action-btn" title="View Teacher" data-action="view" data-id="FAC001">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn" title="Edit">
+                            <button class="action-btn" title="Update Teacher" data-action="edit" data-id="FAC001">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn" title="Delete">
+                            <button class="action-btn" title="Remove Teacher" data-action="delete" data-id="FAC001">
                                 <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Course" data-action="assign" data-id="FAC001">
+                                <i class="fas fa-book"></i>
                             </button>
                         </td>
                     </tr>
@@ -127,16 +133,18 @@
                         <td>Computer Science</td>
                         <td>Assistant Professor</td>
                         <td>nishtha.phutela@bmu.edu</td>
-                        <td><span class="status submitted">Active</span></td>
                         <td>
-                            <button class="action-btn" title="View Details">
+                            <button class="action-btn" title="View Teacher" data-action="view" data-id="FAC002">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn" title="Edit">
+                            <button class="action-btn" title="Update Teacher" data-action="edit" data-id="FAC002">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn" title="Delete">
+                            <button class="action-btn" title="Remove Teacher" data-action="delete" data-id="FAC002">
                                 <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Course" data-action="assign" data-id="FAC002">
+                                <i class="fas fa-book"></i>
                             </button>
                         </td>
                     </tr>
@@ -146,16 +154,18 @@
                         <td>Information Technology</td>
                         <td>Lecturer</td>
                         <td>gautam.gupta@bmu.edu</td>
-                        <td><span class="status submitted">Active</span></td>
                         <td>
-                            <button class="action-btn" title="View Details">
+                            <button class="action-btn" title="View Teacher" data-action="view" data-id="FAC003">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn" title="Edit">
+                            <button class="action-btn" title="Update Teacher" data-action="edit" data-id="FAC003">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn" title="Delete">
+                            <button class="action-btn" title="Remove Teacher" data-action="delete" data-id="FAC003">
                                 <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Course" data-action="assign" data-id="FAC003">
+                                <i class="fas fa-book"></i>
                             </button>
                         </td>
                     </tr>
@@ -165,16 +175,18 @@
                         <td>Design</td>
                         <td>Assistant Professor</td>
                         <td>avijit.chakarvarti@bmu.edu</td>
-                        <td><span class="status submitted">Active</span></td>
                         <td>
-                            <button class="action-btn" title="View Details">
+                            <button class="action-btn" title="View Teacher" data-action="view" data-id="FAC004">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn" title="Edit">
+                            <button class="action-btn" title="Update Teacher" data-action="edit" data-id="FAC004">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn" title="Delete">
+                            <button class="action-btn" title="Remove Teacher" data-action="delete" data-id="FAC004">
                                 <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Course" data-action="assign" data-id="FAC004">
+                                <i class="fas fa-book"></i>
                             </button>
                         </td>
                     </tr>
@@ -184,20 +196,22 @@
                         <td>Computer Science</td>
                         <td>Professor</td>
                         <td>anantha.rao@bmu.edu</td>
-                        <td><span class="status submitted">Active</span></td>
                         <td>
-                            <button class="action-btn" title="View Details">
+                            <button class="action-btn" title="View Teacher" data-action="view" data-id="FAC005">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn" title="Edit">
+                            <button class="action-btn" title="Update Teacher" data-action="edit" data-id="FAC005">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn" title="Delete">
+                            <button class="action-btn" title="Remove Teacher" data-action="delete" data-id="FAC005">
                                 <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Course" data-action="assign" data-id="FAC005">
+                                <i class="fas fa-book"></i>
                             </button>
                         </td>
                     </tr>
-                </tbody>
+                </tbody> -->
             </table>
             <div class="pagination">
                 <button>Previous</button>
@@ -206,35 +220,11 @@
                 <button>Next</button>
             </div>
         </div>
-
-        <!-- Faculty Statistics -->
-        <div class="content-panel" style="margin-top: 20px;">
-            <h2>Faculty Statistics</h2>
-            <div class="card-grid">
-                <div class="card">
-                    <h3 class="card-title">Total Faculty</h3>
-                    <p class="card-text">24</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Departments</h3>
-                    <p class="card-text">6</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Average Experience</h3>
-                    <p class="card-text">8.5 years</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">New Additions</h3>
-                    <p class="card-text">3 (this semester)</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add Faculty Modal -->
+        <!-- Create Teacher Modal -->
         <div id="addFacultyModal" class="modal">
             <div class="modal-content">
                 <span class="close-btn">&times;</span>
-                <h2>Add New Faculty</h2>
+                <h2>Create New Teacher</h2>
                 <form id="addFacultyForm">
                     <div class="form-group">
                         <label for="facultyId">Faculty ID</label>
@@ -279,7 +269,113 @@
                         <label for="joiningDate">Joining Date</label>
                         <input type="date" id="joiningDate" name="joiningDate" class="form-control" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Faculty</button>
+                    <button type="submit" class="btn btn-primary">Create Teacher</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- View Teacher Modal -->
+        <div id="viewFacultyModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Teacher Details</h2>
+                <div id="facultyDetails">
+                    <div class="detail-row">
+                        <div class="detail-label">Faculty ID:</div>
+                        <div class="detail-value" id="view-facultyId">FAC001</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div class="detail-value" id="view-facultyName">Dr. Satyendr Singh</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Department:</div>
+                        <div class="detail-value" id="view-department">Computer Science</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Designation:</div>
+                        <div class="detail-value" id="view-designation">Associate Professor</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Email:</div>
+                        <div class="detail-value" id="view-email">satyendr.singh@bmu.edu</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Phone:</div>
+                        <div class="detail-value" id="view-phone">+91 98765 43210</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Joining Date:</div>
+                        <div class="detail-value" id="view-joiningDate">15 Aug 2018</div>
+                    </div>
+                    
+                    <h3 style="margin-top: 20px;">Assigned Courses</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Semester</th>
+                                <th>Credits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CSE2709</td>
+                                <td>Computer Organization and Architecture</td>
+                                <td>Semester 1</td>
+                                <td>3.0</td>
+                            </tr>
+                            <tr>
+                                <td>CSE4002</td>
+                                <td>Advanced Computer Architecture</td>
+                                <td>Semester 4</td>
+                                <td>4.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assign Course Modal -->
+        <div id="assignCourseModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Assign Course to Faculty</h2>
+                <form id="assignCourseForm">
+                    <div class="form-group">
+                        <label for="facultySelect">Select Faculty</label>
+                        <select id="facultySelect" name="facultySelect" class="form-control" required>
+                            <option value="">Select Faculty</option>
+                            <option value="FAC001">FAC001 - Dr. Satyendr Singh</option>
+                            <option value="FAC002">FAC002 - Dr. Nishtha Phutela</option>
+                            <option value="FAC003">FAC003 - Mr. Gautam Gupta</option>
+                            <option value="FAC004">FAC004 - Mr. Avijit Chakarvarti</option>
+                            <option value="FAC005">FAC005 - Prof. Anantha Rao</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseSelect">Select Course</label>
+                        <select id="courseSelect" name="courseSelect" class="form-control" required>
+                            <option value="">Select Course</option>
+                            <option value="CSE2709">CSE2709 - Computer Organization and Architecture</option>
+                            <option value="CSE3005">CSE3005 - Software Engineering</option>
+                            <option value="CSE3709">CSE3709 - Mobile Application Development</option>
+                            <option value="PSP2709">PSP2709 - Design Thinking</option>
+                            <option value="CSE2032">CSE2032 - Machine Learning</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="semester">Semester</label>
+                        <select id="semester" name="semester" class="form-control" required>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Assign Course</button>
                 </form>
             </div>
         </div>
@@ -291,7 +387,55 @@
         // Initialize search functionality
         document.addEventListener('DOMContentLoaded', function() {
             setupSearch('facultySearch', 'facultyTable', [1, 2, 3, 4]); // Search in name, department, designation, email columns
+            
+            // Handle View Teacher action
+            document.querySelectorAll('[data-action="view"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const facultyId = this.getAttribute('data-id');
+                    // Fetch faculty details and populate the view modal
+                    openModal('viewFacultyModal');
+                });
+            });
+            
+            // Handle Update Teacher action
+            document.querySelectorAll('[data-action="edit"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const facultyId = this.getAttribute('data-id');
+                    // Fetch faculty details and populate the edit form
+                    openModal('addFacultyModal');
+                    // Additional logic to populate form with existing data
+                });
+            });
+            
+            // Handle Remove Teacher action
+            document.querySelectorAll('[data-action="delete"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const facultyId = this.getAttribute('data-id');
+                    if (confirm('Are you sure you want to remove this teacher?')) {
+                        // Code to remove teacher
+                        console.log('Removing teacher with ID:', facultyId);
+                    }
+                });
+            });
+            
+            // Handle Assign Course action
+            document.querySelectorAll('[data-action="assign"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const facultyId = this.getAttribute('data-id');
+                    // Pre-select the faculty in the assign course form
+                    document.getElementById('facultySelect').value = facultyId;
+                    openModal('assignCourseModal');
+                });
+            });
+            
+            // Form submissions
             handleFormSubmit('addFacultyForm', 'faculty', 'faculty.html');
+            handleFormSubmit('assignCourseForm', 'assignCourse', 'faculty.html');
+            
+            // Modal functionality
+            function openModal(modalId) {
+                document.getElementById(modalId).style.display = 'block';
+            }
         });
     </script>
 </body>
