@@ -300,6 +300,10 @@
                 // Here you would typically load attendance data from the server
                 alert(`Loading attendance for ${course} on ${date} (${session} session)`);
             });
+
+            $('#facultySelect').on('select2:open', function() {
+                $('.select2-search__field').focus();
+            });
         });
     </script>
 </body>

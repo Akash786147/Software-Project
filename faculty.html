@@ -6,6 +6,23 @@
     <title>Faculty Management | Course Management System</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+        .select2-container .select2-selection--single {
+            height: 38px;
+            border: 1px solid #ced4da;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 38px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+    </style>
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -102,7 +119,6 @@
             <table class="data-table" id="facultyTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Department</th>
                         <th>Designation</th>
@@ -120,7 +136,7 @@
                 <form id="addFacultyForm">
                     <div class="form-group">
                         <label for="facultyId">Faculty ID</label>
-                        <input type="text" id="facultyId" name="facultyId" class="form-control" required>
+                        <input type="text" id="facultyId" name="facultyId" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label for="facultyName">Full Name</label>
@@ -207,7 +223,6 @@
                             <tr>
                                 <th>Course Code</th>
                                 <th>Course Name</th>
-                                <th>Semester</th>
                                 <th>Credits</th>
                             </tr>
                         </thead>
@@ -215,13 +230,11 @@
                             <tr>
                                 <td>CSE2709</td>
                                 <td>Computer Organization and Architecture</td>
-                                <td>Semester 1</td>
                                 <td>3.0</td>
                             </tr>
                             <tr>
                                 <td>CSE4002</td>
                                 <td>Advanced Computer Architecture</td>
-                                <td>Semester 4</td>
                                 <td>4.0</td>
                             </tr>
                         </tbody>
@@ -238,33 +251,19 @@
                 <form id="assignCourseForm">
                     <div class="form-group">
                         <label for="facultySelect">Select Faculty</label>
-                        <select id="facultySelect" name="facultySelect" class="form-control" required>
-                            <option value="">Select Faculty</option>
-                            <option value="FAC001">FAC001 - Dr. Satyendr Singh</option>
-                            <option value="FAC002">FAC002 - Dr. Nishtha Phutela</option>
-                            <option value="FAC003">FAC003 - Mr. Gautam Gupta</option>
-                            <option value="FAC004">FAC004 - Mr. Avijit Chakarvarti</option>
-                            <option value="FAC005">FAC005 - Prof. Anantha Rao</option>
+                        <select id="facultySelect" name="facultySelect" class="form-control select2" required>
+                            <option value="">Search and select faculty...</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="courseSelect">Select Course</label>
-                        <select id="courseSelect" name="courseSelect" class="form-control" required>
-                            <option value="">Select Course</option>
+                        <select id="courseSelect" name="courseSelect" class="form-control select2" required>
+                            <option value="">Search and select course...</option>
                             <option value="CSE2709">CSE2709 - Computer Organization and Architecture</option>
                             <option value="CSE3005">CSE3005 - Software Engineering</option>
                             <option value="CSE3709">CSE3709 - Mobile Application Development</option>
                             <option value="PSP2709">PSP2709 - Design Thinking</option>
                             <option value="CSE2032">CSE2032 - Machine Learning</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="semester">Semester</label>
-                        <select id="semester" name="semester" class="form-control" required>
-                            <option value="1">Semester 1</option>
-                            <option value="2">Semester 2</option>
-                            <option value="3">Semester 3</option>
-                            <option value="4">Semester 4</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Assign Course</button>
@@ -275,5 +274,8 @@
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
+    <!-- Add jQuery and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 </html> 

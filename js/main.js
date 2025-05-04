@@ -19,6 +19,7 @@ function populateFacultyDropdown() {
     const facultySelect = document.getElementById('facultySelect');
     if (!facultySelect) return;
 
+    // Keep only the first option
     while (facultySelect.options.length > 1) {
         facultySelect.remove(1);
     }
@@ -26,8 +27,15 @@ function populateFacultyDropdown() {
     facultyDB.getAllFaculty().forEach(f => {
         const option = document.createElement('option');
         option.value = f.id;
-        option.textContent = `${f.name}`;
+        option.textContent = f.name;
         facultySelect.appendChild(option);
+    });
+
+    // Initialize Select2
+    $(facultySelect).select2({
+        placeholder: "Search and select faculty...",
+        allowClear: true,
+        width: '100%'
     });
 }
 
@@ -44,7 +52,7 @@ function renderAssignedCourses(facultyId) {
     tbody.innerHTML = '';
     if (assignments.length === 0) {
         const row = document.createElement('tr');
-        row.innerHTML = '<td colspan="4">No courses assigned.</td>';
+        row.innerHTML = '<td colspan="3">No courses assigned.</td>';
         tbody.appendChild(row);
         return;
     }
@@ -63,7 +71,6 @@ function renderAssignedCourses(facultyId) {
         row.innerHTML = `
             <td>${a.courseCode}</td>
             <td>${courseInfo.name}</td>
-            <td>Semester ${a.semester}</td>
             <td>${courseInfo.credits}</td>
         `;
         tbody.appendChild(row);
@@ -89,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const facultyList = this.getAllFaculty();
             const newFaculty = {
                 ...facultyData,
-                id: facultyData.facultyId || 'FAC' + Date.now().toString().slice(-4)
+                id: 'FAC' + (facultyList.length + 1).toString().padStart(3, '0')
             };
             facultyList.push(newFaculty);
             localStorage.setItem('faculty', JSON.stringify(facultyList));
@@ -151,6 +158,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalId = this.getAttribute('data-modal');
             if (modalId === 'assignCourseModal') {
                 populateFacultyDropdown();
+                // Initialize Select2 for course select
+                $('#courseSelect').select2({
+                    placeholder: "Search and select course...",
+                    allowClear: true,
+                    width: '100%'
+                });
             }
             openModal(modalId);
         });
@@ -170,11 +183,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const addFacultyForm = document.getElementById('addFacultyForm');
     if (addFacultyForm) {
+        document.querySelectorAll('[data-modal="addFacultyModal"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const facultyList = facultyDB.getAllFaculty();
+                const nextId = 'FAC' + (facultyList.length + 1).toString().padStart(3, '0');
+                document.getElementById('facultyId').value = nextId;
+            });
+        });
+
         addFacultyForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(addFacultyForm);
             const faculty = {
-                facultyId: formData.get('facultyId'),
                 name: formData.get('facultyName'),
                 department: formData.get('department'),
                 designation: formData.get('designation'),
@@ -208,12 +228,21 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const assignment = {
                 facultyId: document.getElementById('facultySelect').value,
-                courseCode: document.getElementById('courseSelect').value,
-                semester: document.getElementById('semester').value
+                courseCode: document.getElementById('courseSelect').value
             };
+
+            if (!assignment.facultyId || !assignment.courseCode) {
+                alert('Please select both faculty and course');
+                return;
+            }
+
             if (facultyDB.assignCourse(assignment)) {
                 alert('Course assigned successfully!');
                 closeModal('assignCourseModal');
+                assignCourseForm.reset();
+                // Reset Select2 dropdowns
+                $('#facultySelect').val('').trigger('change');
+                $('#courseSelect').val('').trigger('change');
             }
         });
     }
@@ -259,7 +288,6 @@ function updateFacultyTable(facultyList = null) {
     faculty.forEach(f => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${f.id}</td>
             <td>${f.name}</td>
             <td>${f.department}</td>
             <td>${f.designation}</td>
@@ -399,4 +427,69 @@ const showLoading = (elementId) => {
 };
 
 const showError = (message) => alert('Error: ' + message);
-const showSuccess = (message) => alert('Success: ' + message); 
+const showSuccess = (message) => alert('Success: ' + message);
+
+function setupSearchableDropdown(searchInputId, selectId) {
+    const searchInput = document.getElementById(searchInputId);
+    const select = document.getElementById(selectId);
+    if (!searchInput || !select) return;
+
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const options = select.getElementsByTagName('option');
+
+        for (let i = 1; i < options.length; i++) { // Start from 1 to skip the first "Select" option
+            const option = options[i];
+            const text = option.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                option.style.display = '';
+            } else {
+                option.style.display = 'none';
+            }
+        }
+    });
+}
+
+function setupSelectSearch(selectId) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    // Create a wrapper div
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    select.parentNode.insertBefore(wrapper, select);
+    wrapper.appendChild(select);
+
+    // Create search input
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.className = 'form-control';
+    searchInput.style.marginBottom = '5px';
+    searchInput.placeholder = 'Type to search...';
+    wrapper.insertBefore(searchInput, select);
+
+    // Add search functionality
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const options = select.getElementsByTagName('option');
+
+        for (let i = 1; i < options.length; i++) { // Skip first option
+            const option = options[i];
+            const text = option.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                option.style.display = '';
+            } else {
+                option.style.display = 'none';
+            }
+        }
+    });
+
+    // Clear search when select changes
+    select.addEventListener('change', function() {
+        searchInput.value = '';
+        const options = select.getElementsByTagName('option');
+        for (let i = 1; i < options.length; i++) {
+            options[i].style.display = '';
+        }
+    });
+} 
