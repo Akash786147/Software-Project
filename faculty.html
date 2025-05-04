@@ -119,7 +119,9 @@
             <table class="data-table" id="facultyTable">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Name</th>
+                        <th>School</th>
                         <th>Department</th>
                         <th>Designation</th>
                         <th>Email</th>
@@ -135,23 +137,23 @@
                 <h2>Create New Teacher</h2>
                 <form id="addFacultyForm">
                     <div class="form-group">
-                        <label for="facultyId">Faculty ID</label>
-                        <input type="text" id="facultyId" name="facultyId" class="form-control" readonly>
-                    </div>
-                    <div class="form-group">
                         <label for="facultyName">Full Name</label>
                         <input type="text" id="facultyName" name="facultyName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="school">School</label>
+                        <select id="school" name="school" class="form-control" required>
+                            <option value="">Select School</option>
+                            <option value="SOET">School of Engineering and Technology (SOET)</option>
+                            <option value="SOM">School of Management (SOM)</option>
+                            <option value="SOLS">School of Liberal Studies (SOLS)</option>
+                            <option value="SOL">School of Law (SOL)</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
                         <select id="department" name="department" class="form-control" required>
                             <option value="">Select Department</option>
-                            <option value="Computer Science">Computer Science</option>
-                            <option value="Information Technology">Information Technology</option>
-                            <option value="Design">Design</option>
-                            <option value="Electrical Engineering">Electrical Engineering</option>
-                            <option value="Mechanical Engineering">Mechanical Engineering</option>
-                            <option value="Management">Management</option>
                         </select>
                     </div>
                     <div class="form-group">

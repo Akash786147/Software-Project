@@ -31,7 +31,7 @@ function populateFacultyDropdown() {
         facultySelect.appendChild(option);
     });
 
-    // Initialize Select2
+
     $(facultySelect).select2({
         placeholder: "Search and select faculty...",
         allowClear: true,
@@ -49,7 +49,9 @@ function renderAssignedCourses(facultyId) {
     const tbody = document.querySelector('#viewFacultyModal table.data-table tbody');
     if (!tbody) return;
 
+    // Clear previous rows to prevent duplicates
     tbody.innerHTML = '';
+
     if (assignments.length === 0) {
         const row = document.createElement('tr');
         row.innerHTML = '<td colspan="3">No courses assigned.</td>';
@@ -75,6 +77,48 @@ function renderAssignedCourses(facultyId) {
         `;
         tbody.appendChild(row);
     });
+}
+
+// School to Department mapping
+const schoolDepartments = {
+    SOET: [
+        'Computer Science and Engineering (CSE)',
+        'Electronics and Communication Engineering (ECE)',
+        'Mechanical Engineering (ME)',
+        'Civil Engineering (CE)',
+        'Electrical Engineering (EE)'
+    ],
+    SOM: [
+        'Bachelor of Business Administration (BBA)',
+        'BBA+MBA',
+        'Master of Business Administration (MBA)',
+        'Bachelor of Commerce (B.Com)'
+    ],
+    SOL: [
+        'Bachelor of Arts and Bachelor of Law (BA LLB)',
+        'Bachelor of Business Administration and Bachelor of Law (BBA LLB)'
+    ],
+    SOLS: [
+        'Psychology',
+        'Economics',
+        'Political Science'
+    ]
+};
+
+function updateDepartmentOptions() {
+    const schoolSelect = document.getElementById('school');
+    const departmentSelect = document.getElementById('department');
+    if (!schoolSelect || !departmentSelect) return;
+    const school = schoolSelect.value;
+    departmentSelect.innerHTML = '<option value="">Select Department</option>';
+    if (school && schoolDepartments[school]) {
+        schoolDepartments[school].forEach(dep => {
+            const option = document.createElement('option');
+            option.value = dep;
+            option.textContent = dep;
+            departmentSelect.appendChild(option);
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -195,8 +239,9 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const formData = new FormData(addFacultyForm);
             const faculty = {
-                name: formData.get('facultyName'),
+                school: formData.get('school'),
                 department: formData.get('department'),
+                name: formData.get('facultyName'),
                 designation: formData.get('designation'),
                 email: formData.get('email'),
                 phone: formData.get('phone'),
@@ -263,6 +308,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // School/Department dynamic update
+    const schoolSelect = document.getElementById('school');
+    if (schoolSelect) {
+        schoolSelect.addEventListener('change', updateDepartmentOptions);
+    }
+
     updateFacultyTable();
 });
 
@@ -288,7 +339,9 @@ function updateFacultyTable(facultyList = null) {
     faculty.forEach(f => {
         const row = document.createElement('tr');
         row.innerHTML = `
+            <td>${f.id}</td>
             <td>${f.name}</td>
+            <td>${f.school || ''}</td>
             <td>${f.department}</td>
             <td>${f.designation}</td>
             <td>${f.email}</td>
@@ -329,18 +382,19 @@ function editFaculty(id) {
     if (faculty) {
         const form = document.getElementById('addFacultyForm');
         form.dataset.editId = id;
-        
-        document.getElementById('facultyId').value = faculty.id;
+
         document.getElementById('facultyName').value = faculty.name;
-        document.getElementById('department').value = faculty.department;
+        document.getElementById('school').value = faculty.school || '';
+        updateDepartmentOptions();
+        document.getElementById('department').value = faculty.department || '';
         document.getElementById('designation').value = faculty.designation;
         document.getElementById('email').value = faculty.email;
         document.getElementById('phone').value = faculty.phone;
         document.getElementById('joiningDate').value = faculty.joiningDate;
-        
+
         const submitBtn = form.querySelector('button[type="submit"]');
         if (submitBtn) submitBtn.textContent = 'Save Changes';
-        
+
         openModal('addFacultyModal');
     }
 }
@@ -484,7 +538,7 @@ function setupSelectSearch(selectId) {
         }
     });
 
-    // Clear search when select changes
+    
     select.addEventListener('change', function() {
         searchInput.value = '';
         const options = select.getElementsByTagName('option');
