@@ -128,106 +128,17 @@
 
         <!-- Grade Entry Section -->
         <div class="content-panel tab-content" id="gradeEntry">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h2>Software Engineering (CSE3005) - Mid-Term Results</h2>
-                <div>
-                    <button class="btn btn-primary" id="importGradesBtn">
-                        <i class="fas fa-file-import"></i> Import
-                    </button>
-                    <button class="btn btn-primary" style="margin-left: 10px;" id="templateBtn">
-                        <i class="fas fa-file-download"></i> Template
-                    </button>
-                </div>
+            <h2>Grade Entry</h2>
+            <div class="semester-selector" style="margin-bottom: 20px;">
+                <label for="gradeEntrySemester">Select Semester:</label>
+                <select id="gradeEntrySemester" class="form-control" style="width: 200px; display: inline-block; margin-left: 10px;">
+                    <option value="Sem 1">Semester 1</option>
+                    <option value="Sem 2">Semester 2</option>
+                    <option value="Sem 3">Semester 3</option>
+                    <option value="Sem 4">Semester 4</option>
+                </select>
             </div>
-            <table class="data-table" id="gradesTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Student Name</th>
-                        <th>Marks Obtained</th>
-                        <th>Total Marks</th>
-                        <th>Grade</th>
-                        <th>Comments</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>STU001</td>
-                        <td>Akash Sharma</td>
-                        <td>
-                            <input type="number" class="form-control marks-input" value="78" min="0" max="100">
-                        </td>
-                        <td>100</td>
-                        <td>B+</td>
-                        <td>
-                            <input type="text" class="form-control" placeholder="Add comment...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STU002</td>
-                        <td>Akshit Patel</td>
-                        <td>
-                            <input type="number" class="form-control marks-input" value="92" min="0" max="100">
-                        </td>
-                        <td>100</td>
-                        <td>A</td>
-                        <td>
-                            <input type="text" class="form-control" value="Excellent performance" placeholder="Add comment...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STU003</td>
-                        <td>Palak Gupta</td>
-                        <td>
-                            <input type="number" class="form-control marks-input" value="65" min="0" max="100">
-                        </td>
-                        <td>100</td>
-                        <td>C+</td>
-                        <td>
-                            <input type="text" class="form-control" value="Needs improvement in understanding concepts" placeholder="Add comment...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STU004</td>
-                        <td>Ketan Mishra</td>
-                        <td>
-                            <input type="number" class="form-control marks-input" value="88" min="0" max="100">
-                        </td>
-                        <td>100</td>
-                        <td>A-</td>
-                        <td>
-                            <input type="text" class="form-control" placeholder="Add comment...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STU005</td>
-                        <td>Rahul Singh</td>
-                        <td>
-                            <input type="number" class="form-control marks-input" value="45" min="0" max="100">
-                        </td>
-                        <td>100</td>
-                        <td>D</td>
-                        <td>
-                            <input type="text" class="form-control" value="Failed to meet minimum requirements" placeholder="Add comment...">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="margin-top: 20px; display: flex; justify-content: space-between;">
-                <div>
-                    <button class="btn btn-primary" id="saveGradesBtn">
-                        <i class="fas fa-save"></i> Save Grades
-                    </button>
-                    <button class="btn btn-primary" style="margin-left: 10px;" id="calculateGradesBtn">
-                        <i class="fas fa-calculator"></i> Calculate Grades
-                    </button>
-                </div>
-                <div>
-                    <span><strong>Class Average:</strong> 73.6</span>
-                    <span style="margin-left: 15px;"><strong>Highest:</strong> 92</span>
-                    <span style="margin-left: 15px;"><strong>Lowest:</strong> 45</span>
-                </div>
-            </div>
+            <!-- The rest of the content will be populated dynamically by JavaScript -->
         </div>
 
         <!-- View Results Section -->
@@ -242,58 +153,14 @@
                         <th>ID</th>
                         <th>Student Name</th>
                         <th>Course</th>
-                        <th>Exam Type</th>
                         <th>Marks</th>
                         <th>Grade</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>STU001</td>
-                        <td>Akash Sharma</td>
-                        <td>COA</td>
-                        <td>Mid-Term</td>
-                        <td>82/100</td>
-                        <td>A-</td>
-                        <td><span class="status submitted">Published</span></td>
-                    </tr>
-                    <tr>
-                        <td>STU001</td>
-                        <td>Akash Sharma</td>
-                        <td>SE</td>
-                        <td>Mid-Term</td>
-                        <td>78/100</td>
-                        <td>B+</td>
-                        <td><span class="status submitted">Published</span></td>
-                    </tr>
-                    <tr>
-                        <td>STU002</td>
-                        <td>Akshit Patel</td>
-                        <td>SE</td>
-                        <td>Mid-Term</td>
-                        <td>92/100</td>
-                        <td>A</td>
-                        <td><span class="status submitted">Published</span></td>
-                    </tr>
-                    <tr>
-                        <td>STU003</td>
-                        <td>Palak Gupta</td>
-                        <td>SE</td>
-                        <td>Mid-Term</td>
-                        <td>65/100</td>
-                        <td>C+</td>
-                        <td><span class="status submitted">Published</span></td>
-                    </tr>
-                    <tr>
-                        <td>STU004</td>
-                        <td>Ketan Mishra</td>
-                        <td>SE</td>
-                        <td>Mid-Term</td>
-                        <td>88/100</td>
-                        <td>A-</td>
-                        <td><span class="status submitted">Published</span></td>
-                    </tr>
+                    <!-- Results will be populated dynamically by JavaScript -->
                 </tbody>
             </table>
             <div class="pagination">
@@ -308,11 +175,21 @@
         <!-- Analysis Section -->
         <div class="content-panel tab-content" id="analysis" style="display: none;">
             <h2>Performance Analysis</h2>
+            <div class="semester-selector" style="margin-bottom: 20px;">
+                <label for="analysisSemester">Select Semester:</label>
+                <select id="analysisSemester" class="form-control" style="width: 200px; display: inline-block; margin-left: 10px;">
+                    <option value="All">All Semesters</option>
+                    <option value="Sem 1">Semester 1</option>
+                    <option value="Sem 2">Semester 2</option>
+                    <option value="Sem 3">Semester 3</option>
+                    <option value="Sem 4">Semester 4</option>
+                </select>
+            </div>
             <div class="card-grid">
                 <div class="card">
                     <h3 class="card-title">Course Performance</h3>
                     <div style="margin-top: 15px;">
-                        <table class="data-table">
+                        <table class="data-table" id="coursePerformanceTable">
                             <thead>
                                 <tr>
                                     <th>Course</th>
@@ -322,30 +199,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>COA</td>
-                                    <td>76%</td>
-                                    <td>95%</td>
-                                    <td>88%</td>
-                                </tr>
-                                <tr>
-                                    <td>SE</td>
-                                    <td>74%</td>
-                                    <td>92%</td>
-                                    <td>85%</td>
-                                </tr>
-                                <tr>
-                                    <td>MAD</td>
-                                    <td>71%</td>
-                                    <td>89%</td>
-                                    <td>82%</td>
-                                </tr>
-                                <tr>
-                                    <td>ML</td>
-                                    <td>68%</td>
-                                    <td>91%</td>
-                                    <td>76%</td>
-                                </tr>
+                                <!-- Course performance data will be populated dynamically -->
                             </tbody>
                         </table>
                     </div>
@@ -353,7 +207,7 @@
                 <div class="card">
                     <h3 class="card-title">Grade Distribution</h3>
                     <div style="margin-top: 15px;">
-                        <table class="data-table">
+                        <table class="data-table" id="gradeDistributionTable">
                             <thead>
                                 <tr>
                                     <th>Grade</th>
@@ -362,31 +216,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>A</td>
-                                    <td>12</td>
-                                    <td>15%</td>
-                                </tr>
-                                <tr>
-                                    <td>B</td>
-                                    <td>28</td>
-                                    <td>35%</td>
-                                </tr>
-                                <tr>
-                                    <td>C</td>
-                                    <td>24</td>
-                                    <td>30%</td>
-                                </tr>
-                                <tr>
-                                    <td>D</td>
-                                    <td>10</td>
-                                    <td>12.5%</td>
-                                </tr>
-                                <tr>
-                                    <td>F</td>
-                                    <td>6</td>
-                                    <td>7.5%</td>
-                                </tr>
+                                <!-- Grade distribution data will be populated dynamically -->
                             </tbody>
                         </table>
                     </div>
@@ -401,207 +231,12 @@
 
         <!-- Publish Results Section -->
         <div class="content-panel tab-content" id="publish" style="display: none;">
-            <h2>Publish Results</h2>
-            <div style="margin-top: 20px;">
-                <div class="card">
-                    <h3 class="card-title">Software Engineering (CSE3005) - Mid-Term Results</h3>
-                    <p>Total Students: 85 | Graded: 85 | Ready to Publish</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                        <div>
-                            <div class="checkbox-container">
-                                <input type="checkbox" id="emailNotify" checked>
-                                <label for="emailNotify">Send email notifications to students</label>
-                            </div>
-                            <div class="checkbox-container">
-                                <input type="checkbox" id="smsNotify">
-                                <label for="smsNotify">Send SMS notifications to students</label>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" id="publishBtn">
-                            <i class="fas fa-paper-plane"></i> Publish Results
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div style="margin-top: 20px;">
-                <h3>Published Results</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Course</th>
-                            <th>Exam Type</th>
-                            <th>Published Date</th>
-                            <th>Published By</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>COA (CSE2709)</td>
-                            <td>Mid-Term</td>
-                            <td>10/01/2023</td>
-                            <td>Dr. Satyendr Singh</td>
-                            <td>
-                                <button class="action-btn" title="View">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn" title="Unpublish">
-                                    <i class="fas fa-times-circle"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>SE (CSE3005)</td>
-                            <td>End-Term</td>
-                            <td>12/15/2022</td>
-                            <td>Dr. Nishtha Phutela</td>
-                            <td>
-                                <button class="action-btn" title="View">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn" title="Unpublish">
-                                    <i class="fas fa-times-circle"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <!-- This content will be dynamically generated by JavaScript -->
         </div>
     </div>
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Calculate grades on input change
-            const marksInputs = document.querySelectorAll('.marks-input');
-            marksInputs.forEach(input => {
-                input.addEventListener('change', function() {
-                    const marks = parseFloat(this.value);
-                    let grade = '';
-                    
-                    if (marks >= 90) grade = 'A';
-                    else if (marks >= 85) grade = 'A-';
-                    else if (marks >= 80) grade = 'B+';
-                    else if (marks >= 75) grade = 'B';
-                    else if (marks >= 70) grade = 'B-';
-                    else if (marks >= 65) grade = 'C+';
-                    else if (marks >= 60) grade = 'C';
-                    else if (marks >= 50) grade = 'D';
-                    else grade = 'F';
-                    
-                    // Update grade in table
-                    const gradeCell = this.closest('tr').cells[4];
-                    gradeCell.textContent = grade;
-                    
-                    // Recalculate class average
-                    calculateStats();
-                });
-            });
-            
-            // Calculate class statistics
-            function calculateStats() {
-                const marks = Array.from(marksInputs).map(input => parseFloat(input.value));
-                const total = marks.reduce((sum, mark) => sum + mark, 0);
-                const average = (total / marks.length).toFixed(1);
-                const highest = Math.max(...marks);
-                const lowest = Math.min(...marks);
-                
-                document.querySelector('span:nth-child(1) strong').nextSibling.nodeValue = ` ${average}`;
-                document.querySelector('span:nth-child(2) strong').nextSibling.nodeValue = ` ${highest}`;
-                document.querySelector('span:nth-child(3) strong').nextSibling.nodeValue = ` ${lowest}`;
-            }
-            
-            // Calculate grades button
-            document.getElementById('calculateGradesBtn').addEventListener('click', function() {
-                marksInputs.forEach(input => {
-                    // Trigger change event to recalculate grades
-                    const event = new Event('change');
-                    input.dispatchEvent(event);
-                });
-                
-                alert('Grades calculated successfully!');
-            });
-            
-            // Save grades button
-            document.getElementById('saveGradesBtn').addEventListener('click', function() {
-                alert('Grades saved successfully!');
-            });
-            
-            // Publish results button
-            document.getElementById('publishBtn')?.addEventListener('click', function() {
-                const emailNotify = document.getElementById('emailNotify').checked;
-                const smsNotify = document.getElementById('smsNotify').checked;
-                
-                let message = 'Results published successfully!';
-                if (emailNotify) message += ' Email notifications sent.';
-                if (smsNotify) message += ' SMS notifications sent.';
-                
-                alert(message);
-            });
-            
-            // Load results button
-            document.getElementById('loadResultsBtn').addEventListener('click', function() {
-                const semester = document.getElementById('semesterSelect').value;
-                const course = document.getElementById('courseSelect').value;
-                const examType = document.getElementById('examTypeSelect').value;
-                
-                if (!semester || !course || !examType) {
-                    alert('Please select semester, course and exam type to load results.');
-                    return;
-                }
-                
-                // Here you would typically load results data from the server
-                alert(`Loading results for ${course} (${examType}) in Semester ${semester}`);
-            });
-            
-            // Generate report button
-            document.getElementById('generateReportBtn')?.addEventListener('click', function() {
-                alert('Generating comprehensive report. This may take a few moments...');
-                // Simulate report generation
-                setTimeout(() => {
-                    alert('Report generated successfully!');
-                }, 1500);
-            });
-            
-            // Search functionality for results
-            const resultSearch = document.getElementById('resultSearch');
-            if (resultSearch) {
-                resultSearch.addEventListener('keyup', function() {
-                    const searchValue = this.value.toLowerCase();
-                    const resultTable = this.closest('.tab-content').querySelector('table');
-                    const rows = resultTable.querySelectorAll('tbody tr');
-                    
-                    rows.forEach(row => {
-                        const studentId = row.cells[0].textContent.toLowerCase();
-                        const studentName = row.cells[1].textContent.toLowerCase();
-                        
-                        if (studentId.includes(searchValue) || studentName.includes(searchValue)) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
-                });
-            }
-            
-            // Import grades button
-            document.getElementById('importGradesBtn')?.addEventListener('click', function() {
-                alert('Please select a CSV or Excel file to import grades.');
-            });
-            
-            // Template button
-            document.getElementById('templateBtn')?.addEventListener('click', function() {
-                alert('Template downloaded successfully!');
-            });
-        });
-    </script>
+    <script src="js/result.js"></script>
 </body>
 </html> 
