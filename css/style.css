@@ -482,4 +482,314 @@ input[type="checkbox"], input[type="radio"] {
 /* Text utilities */
 .text-center {
     text-align: center;
-} 
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+.selection-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin: 25px 0;
+}
+.selection-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+}
+.class-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 35px;
+    margin: 25px 0;
+}
+.info-group {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+.info-group h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+.info-group p {
+    margin: 12px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    color: #495057;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.info-group p:last-child {
+    border-bottom: none;
+}
+.info-group p strong {
+    flex: 1;
+}
+.info-group p span {
+    text-align: right;
+    min-width: 50px;
+}
+.edit-count {
+    background: none;
+    border: none;
+    color: #7165E3;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+.edit-count:hover {
+    color: #635acb;
+}
+.count-input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+.table-container {
+    margin: 25px 0;
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.table-container h3 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 1.2em;
+}
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.data-table th {
+    background: #f8f9fa;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #2c3e50;
+}
+.data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    overflow-y: auto;
+}
+.modal-content {
+    max-width: 700px;
+    width: 90%;
+    padding: 25px;
+    border-radius: 12px;
+    background: white;
+    margin: 20px auto;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+}
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+.page-title {
+    margin-bottom: 35px;
+    color: #2c3e50;
+}
+.subject-teachers-container {
+    margin-top: 15px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+.subject-teacher-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+.remove-teacher {
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+.add-teacher-btn {
+    margin-top: 15px;
+}
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-primary {
+    background: #7165E3;
+    color: white;
+    border: none;
+}
+.btn-primary:hover {
+    background: #635acb;
+}
+.btn-danger {
+    background: #7165E3;
+    color: white;
+    border: none;
+}
+.btn-danger:hover {
+    background: #635acb;
+}
+.btn-secondary {
+    background: #E8E7FF;
+    color: #7165E3;
+    border: none;
+}
+.btn-secondary:hover {
+    background: #d6d4ff;
+}
+.main-content {
+    padding: 30px;
+}
+.modal-partition {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.partition-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+.partition-section h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    border-bottom: 2px solid #7165E3;
+    padding-bottom: 8px;
+}
+.student-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+.student-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+.student-inputs input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+}
+.remove-student {
+    align-self: flex-end;
+    color: #7165E3;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 8px 15px;
+    background: #E8E7FF;
+    border-radius: 4px;
+    border: none;
+    transition: all 0.3s ease;
+    margin-top: 5px;
+}
+.remove-teacher, .remove-student {
+    color: #7165E3;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 5px 10px;
+    background: #E8E7FF;
+    border-radius: 4px;
+    border: none;
+    transition: all 0.3s ease;
+}
+.remove-teacher:hover, .remove-student:hover {
+    background: #d6d4ff;
+}
+.class-details-card {
+    display: none; /* Hide by default */
+}
+
+.class-details-card.visible {
+    display: block; /* Show when class is selected */
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.create-class-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.selection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
