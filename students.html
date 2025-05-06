@@ -444,56 +444,240 @@
     <script>
         // Initialize search functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize students array from localStorage or create empty array
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            
+            // Function to save students to localStorage
+            function saveStudents() {
+                localStorage.setItem('students', JSON.stringify(students));
+            }
+
+            // Function to render students table
+            function renderStudentsTable() {
+                const table = document.getElementById('studentTable');
+                const tbody = table.querySelector('tbody') || table.createTBody();
+                tbody.innerHTML = ''; // Clear existing rows
+
+                students.forEach(student => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${student.studentId}</td>
+                        <td>${student.firstName} ${student.lastName}</td>
+                        <td>${student.program}</td>
+                        <td>${student.year}</td>
+                        <td>${student.email}</td>
+                        <td>
+                            <button class="action-btn" title="View Student" data-action="view" data-id="${student.studentId}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" title="Update Student" data-action="edit" data-id="${student.studentId}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="Delete Student" data-action="delete" data-id="${student.studentId}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Courses" data-action="assign" data-id="${student.studentId}">
+                                <i class="fas fa-book"></i>
+                            </button>
+                        </td>
+                    `;
+                });
+
+                // Add event listeners to the new buttons
+                addActionButtonListeners();
+            }
+
+            // Function to populate student select dropdown
+            function updateStudentSelect() {
+                const select = document.getElementById('studentSelect');
+                select.innerHTML = '<option value="">Select Student</option>';
+                students.forEach(student => {
+                    select.innerHTML += `
+                        <option value="${student.studentId}">${student.studentId} - ${student.firstName} ${student.lastName}</option>
+                    `;
+                });
+            }
+
+            // Function to populate view modal with student details
+            function populateViewModal(studentId) {
+                const student = students.find(s => s.studentId === studentId);
+                if (student) {
+                    document.getElementById('view-studentId').textContent = student.studentId;
+                    document.getElementById('view-studentName').textContent = `${student.firstName} ${student.lastName}`;
+                    document.getElementById('view-program').textContent = student.program;
+                    document.getElementById('view-year').textContent = student.year;
+                    document.getElementById('view-email').textContent = student.email;
+                    document.getElementById('view-phone').textContent = student.phone;
+                    document.getElementById('view-dob').textContent = new Date(student.dob).toLocaleDateString();
+                    document.getElementById('view-address').textContent = student.address;
+                }
+            }
+
+            // Function to populate edit form with student details
+            function populateEditForm(studentId) {
+                const student = students.find(s => s.studentId === studentId);
+                if (student) {
+                    document.getElementById('studentId').value = student.studentId;
+                    document.getElementById('firstName').value = student.firstName;
+                    document.getElementById('lastName').value = student.lastName;
+                    document.getElementById('program').value = student.program;
+                    document.getElementById('year').value = student.year;
+                    document.getElementById('email').value = student.email;
+                    document.getElementById('phone').value = student.phone;
+                    document.getElementById('dob').value = student.dob;
+                    document.getElementById('address').value = student.address;
+                }
+            }
+
             setupSearch('studentSearch', 'studentTable', [1, 2, 3, 4]); // Search in name, program, year, email columns
             
-            // Handle View Student action
-            document.querySelectorAll('[data-action="view"]').forEach(button => {
+            // Add Student button click handler
+            document.querySelector('[data-modal="addStudentModal"]').addEventListener('click', function() {
+                document.getElementById('addStudentForm').reset();
+                openModal('addStudentModal');
+            });
+
+            // Close button handlers for all modals
+            document.querySelectorAll('.close-btn').forEach(button => {
                 button.addEventListener('click', function() {
-                    const studentId = this.getAttribute('data-id');
-                    // Fetch student details and populate the view modal
-                    openModal('viewStudentModal');
+                    const modal = this.closest('.modal');
+                    closeModal(modal.id);
                 });
             });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    closeModal(event.target.id);
+                }
+            });
+            
+            // Handle View Student action
+            function handleViewStudent(studentId) {
+                populateViewModal(studentId);
+                openModal('viewStudentModal');
+            }
             
             // Handle Update Student action
-            document.querySelectorAll('[data-action="edit"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const studentId = this.getAttribute('data-id');
-                    // Fetch student details and populate the edit form
-                    openModal('addStudentModal');
-                    // Additional logic to populate form with existing data
-                });
-            });
+            function handleEditStudent(studentId) {
+                populateEditForm(studentId);
+                openModal('addStudentModal');
+            }
             
             // Handle Delete Student action
-            document.querySelectorAll('[data-action="delete"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const studentId = this.getAttribute('data-id');
-                    if (confirm('Are you sure you want to delete this student?')) {
-                        // Code to delete student
-                        console.log('Deleting student with ID:', studentId);
-                    }
-                });
-            });
+            function handleDeleteStudent(studentId) {
+                if (confirm('Are you sure you want to delete this student?')) {
+                    students = students.filter(s => s.studentId !== studentId);
+                    saveStudents();
+                    renderStudentsTable();
+                    updateStudentSelect();
+                }
+            }
             
             // Handle Assign Courses action
-            document.querySelectorAll('[data-action="assign"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const studentId = this.getAttribute('data-id');
-                    // Pre-select the student in the assign course form
-                    document.getElementById('studentSelect').value = studentId;
-                    openModal('assignCourseModal');
-                });
+            function handleAssignCourses(studentId) {
+                document.getElementById('studentSelect').value = studentId;
+                openModal('assignCourseModal');
+            }
+            
+            // Add Student form submission
+            document.getElementById('addStudentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    studentId: document.getElementById('studentId').value,
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    program: document.getElementById('program').value,
+                    year: document.getElementById('year').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    dob: document.getElementById('dob').value,
+                    address: document.getElementById('address').value
+                };
+
+                // Check if student already exists
+                const existingIndex = students.findIndex(s => s.studentId === formData.studentId);
+                if (existingIndex !== -1) {
+                    // Update existing student
+                    students[existingIndex] = formData;
+                } else {
+                    // Add new student
+                    students.push(formData);
+                }
+
+                saveStudents();
+                renderStudentsTable();
+                updateStudentSelect();
+                closeModal('addStudentModal');
+                this.reset();
+                alert(existingIndex !== -1 ? 'Student updated successfully!' : 'Student added successfully!');
             });
             
-            // Form submissions
-            handleFormSubmit('addStudentForm', 'students', 'students.html');
-            handleFormSubmit('assignCourseForm', 'assignCourses', 'students.html');
+            // Assign Courses form submission
+            document.getElementById('assignCourseForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const studentId = document.getElementById('studentSelect').value;
+                const selectedCourses = Array.from(document.querySelectorAll('input[name="courses"]:checked'))
+                    .map(cb => cb.value);
+                const semester = document.getElementById('semester').value;
+
+                // Here you would typically save the course assignments
+                console.log('Assigning courses:', {
+                    studentId,
+                    courses: selectedCourses,
+                    semester
+                });
+
+                closeModal('assignCourseModal');
+                this.reset();
+                alert('Courses assigned successfully!');
+            });
             
             // Modal functionality
             function openModal(modalId) {
-                document.getElementById(modalId).style.display = 'block';
+                const modal = document.getElementById(modalId);
+                modal.style.display = 'block';
+                modal.offsetHeight; // Trigger reflow
+                modal.classList.add('show');
             }
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            }
+
+            // Helper function to add event listeners to action buttons
+            function addActionButtonListeners() {
+                document.querySelectorAll('.action-btn').forEach(button => {
+                    const action = button.getAttribute('data-action');
+                    const studentId = button.getAttribute('data-id');
+
+                    button.addEventListener('click', function() {
+                        switch(action) {
+                            case 'view':
+                                handleViewStudent(studentId);
+                                break;
+                            case 'edit':
+                                handleEditStudent(studentId);
+                                break;
+                            case 'delete':
+                                handleDeleteStudent(studentId);
+                                break;
+                            case 'assign':
+                                handleAssignCourses(studentId);
+                                break;
+                        }
+                    });
+                });
+            }
+
+            // Initial render
+            renderStudentsTable();
+            updateStudentSelect();
         });
     </script>
 </body>
