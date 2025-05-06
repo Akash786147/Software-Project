@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results | Course Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="BMU Logo">
+        </div>
+        
+        <ul class="nav-menu">
+            <!-- <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li> -->
+            <li class="nav-item">
+                <a href="courses.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="faculty.html" class="nav-link">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Faculty</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="students.html" class="nav-link">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="timetable.html" class="nav-link ">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Timetable</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="attendance.html" class="nav-link">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="results.html" class="nav-link active">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Results</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Results</h1>
+            <!-- <div class="notification-area">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>  
+                </div>
+                <div class="message-icon">
+                    <i class="fas fa-comment"></i>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- Course/Class Selection Section -->
+        <div class="content-panel" style="margin-bottom: 20px; padding: 15px;">
+            <h2>Results Management</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                <div style="flex: 1; min-width: 180px;">
+                    <label for="semesterSelect">Select Semester</label>
+                    <select id="semesterSelect" class="form-control">
+                        <option value="">Select Semester</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 180px;">
+                    <label for="courseSelect">Select Course</label>
+                    <select id="courseSelect" class="form-control">
+                        <option value="">Select Course</option>
+                        <option value="CSE2709">CSE2709 - COA</option>
+                        <option value="CSE3005">CSE3005 - SE</option>
+                        <option value="CSE3709">CSE3709 - MAD</option>
+                        <option value="PSP2709">PSP2709 - Design Thinking</option>
+                        <option value="CSE2032">CSE2032 - Machine Learning</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 180px;">
+                    <label for="examTypeSelect">Exam Type</label>
+                    <select id="examTypeSelect" class="form-control">
+                        <option value="">Select Exam Type</option>
+                        <option value="mid-term">Mid-Term</option>
+                        <option value="end-term">End-Term</option>
+                        <option value="assignment">Assignment</option>
+                        <option value="project">Project</option>
+                        <option value="quiz">Quiz</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: flex-end; min-width: 120px;">
+                    <button class="btn btn-primary" id="loadResultsBtn">
+                        <i class="fas fa-sync-alt"></i> Load
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Registration Status Tabs -->
+        <div class="tab-container">
+            <div class="tab active" data-tab="gradeEntry">Grade Entry</div>
+            <div class="tab" data-tab="viewResults">View Results</div>
+            <div class="tab" data-tab="analysis">Analysis</div>
+            <div class="tab" data-tab="publish">Publish</div>
+        </div>
+
+        <!-- Grade Entry Section -->
+        <div class="content-panel tab-content" id="gradeEntry">
+            <h2>Grade Entry</h2>
+            <div class="semester-selector" style="margin-bottom: 20px;">
+                <label for="gradeEntrySemester">Select Semester:</label>
+                <select id="gradeEntrySemester" class="form-control" style="width: 200px; display: inline-block; margin-left: 10px;">
+                    <option value="Sem 1">Semester 1</option>
+                    <option value="Sem 2">Semester 2</option>
+                    <option value="Sem 3">Semester 3</option>
+                    <option value="Sem 4">Semester 4</option>
+                </select>
+            </div>
+            <!-- The rest of the content will be populated dynamically by JavaScript -->
+        </div>
+
+        <!-- View Results Section -->
+        <div class="content-panel tab-content" id="viewResults" style="display: none;">
+            <h2>View Results</h2>
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="resultSearch" class="form-control" placeholder="Search by student name or ID..." style="width: 300px;">
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Marks</th>
+                        <th>Grade</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Results will be populated dynamically by JavaScript -->
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button>Previous</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>Next</button>
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="content-panel tab-content" id="analysis" style="display: none;">
+            <h2>Performance Analysis</h2>
+            <div class="semester-selector" style="margin-bottom: 20px;">
+                <label for="analysisSemester">Select Semester:</label>
+                <select id="analysisSemester" class="form-control" style="width: 200px; display: inline-block; margin-left: 10px;">
+                    <option value="All">All Semesters</option>
+                    <option value="Sem 1">Semester 1</option>
+                    <option value="Sem 2">Semester 2</option>
+                    <option value="Sem 3">Semester 3</option>
+                    <option value="Sem 4">Semester 4</option>
+                </select>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h3 class="card-title">Course Performance</h3>
+                    <div style="margin-top: 15px;">
+                        <table class="data-table" id="coursePerformanceTable">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Average</th>
+                                    <th>Highest</th>
+                                    <th>Pass Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Course performance data will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Grade Distribution</h3>
+                    <div style="margin-top: 15px;">
+                        <table class="data-table" id="gradeDistributionTable">
+                            <thead>
+                                <tr>
+                                    <th>Grade</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Grade distribution data will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" id="generateReportBtn">
+                    <i class="fas fa-file-export"></i> Generate Full Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Publish Results Section -->
+        <div class="content-panel tab-content" id="publish" style="display: none;">
+            <!-- This content will be dynamically generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/result.js"></script>
+</body>
+</html> 

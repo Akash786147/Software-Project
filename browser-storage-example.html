@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Storage Example</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { display: flex; gap: 20px; }
+        .panel { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { margin: 5px 0; padding: 8px 16px; }
+        input, textarea { width: 100%; margin-bottom: 10px; padding: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Browser Storage for Website Data</h1>
+    
+    <div class="container">
+        <!-- Local Storage Panel -->
+        <div class="panel">
+            <h2>Local Storage</h2>
+            <p>Simple key-value storage (5-10MB limit)</p>
+            
+            <div>
+                <h3>Add Note</h3>
+                <input type="text" id="noteTitle" placeholder="Title">
+                <textarea id="noteContent" rows="4" placeholder="Content"></textarea>
+                <button id="saveNote">Save Note</button>
+            </div>
+            
+            <div>
+                <h3>Your Notes</h3>
+                <div id="notesList"></div>
+                <button id="clearNotes">Clear All Notes</button>
+            </div>
+        </div>
+        
+        <!-- IndexedDB Panel -->
+        <div class="panel">
+            <h2>IndexedDB</h2>
+            <p>More complex object storage (no practical size limit)</p>
+            
+            <div>
+                <h3>Add Product</h3>
+                <input type="text" id="productName" placeholder="Product Name">
+                <input type="number" id="productPrice" placeholder="Price">
+                <input type="number" id="productQuantity" placeholder="Quantity">
+                <button id="saveProduct">Save Product</button>
+            </div>
+            
+            <div>
+                <h3>Products List</h3>
+                <table id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsList"></tbody>
+                </table>
+                <button id="clearProducts">Clear All Products</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== Local Storage Implementation ======
+        
+        // Display all saved notes when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            displayNotes();
+            initializeIndexedDB();
+        });
+        
+        // Save a note to localStorage
+        document.getElementById('saveNote').addEventListener('click', function() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const content = document.getElementById('noteContent').value.trim();
+            
+            if (!title || !content) {
+                alert('Please enter both title and content');
+                return;
+            }
+            
+            // Get existing notes or initialize empty array
+            const notes = JSON.parse(localStorage.getItem('notes') || '[]');
+            
+            // Add new note with timestamp as ID
+            notes.push({
+                id: Date.now(),
+                title: title,
+                content: content,
+                date: new Date().toLocaleString()
+            });
+            
+            // Save back to localStorage
+            localStorage.setItem('notes', JSON.stringify(notes));
+            
+            // Log confirmation to console
+            console.log('Note saved successfully!');
+            console.log('Current notes in storage:', notes);
+            
+            // Clear form
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+            
+            // Update display
+            displayNotes();
+        });
+        
+        // Display notes from localStorage
+        function displayNotes() {
+            const notesList = document.getElementById('notesList');
+            const notes = JSON.parse(localStorage.getItem('notes') || '[]');
+            
+            if (notes.length === 0) {
+                notesList.innerHTML = '<p>No notes saved yet.</p>';
+                return;
+            }
+            
+            let html = '';
+            notes.forEach(note => {
+                html += `
+                    <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+                        <h4>${note.title}</h4>
+                        <p>${note.content}</p>
+                        <small>Created: ${note.date}</small>
+                        <button onclick="deleteNote(${note.id})">Delete</button>
+                    </div>
+                `;
+            });
+            
+            notesList.innerHTML = html;
+        }
+        
+        // Delete a note
+        function deleteNote(id) {
+            let notes = JSON.parse(localStorage.getItem('notes') || '[]');
+            notes = notes.filter(note => note.id !== id);
+            localStorage.setItem('notes', JSON.stringify(notes));
+            displayNotes();
+        }
+        
+        // Clear all notes
+        document.getElementById('clearNotes').addEventListener('click', function() {
+            if (confirm('Are you sure you want to delete all notes?')) {
+                localStorage.removeItem('notes');
+                displayNotes();
+            }
+        });
+        
+        // ====== IndexedDB Implementation ======
+        let db;
+        
+        // Initialize IndexedDB
+        function initializeIndexedDB() {
+            const request = indexedDB.open('WebsiteDatabase', 1);
+            
+            request.onerror = function(event) {
+                console.error('IndexedDB error:', event.target.error);
+            };
+            
+            request.onupgradeneeded = function(event) {
+                const db = event.target.result;
+                
+                // Create object store for products
+                if (!db.objectStoreNames.contains('products')) {
+                    const store = db.createObjectStore('products', { keyPath: 'id', autoIncrement: true });
+                    store.createIndex('name', 'name', { unique: false });
+                    store.createIndex('price', 'price', { unique: false });
+                }
+            };
+            
+            request.onsuccess = function(event) {
+                db = event.target.result;
+                displayProducts();
+            };
+        }
+        
+        // Save product
+        document.getElementById('saveProduct').addEventListener('click', function() {
+            const name = document.getElementById('productName').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const quantity = parseInt(document.getElementById('productQuantity').value);
+            
+            if (!name || isNaN(price) || isNaN(quantity)) {
+                alert('Please fill in all fields correctly');
+                return;
+            }
+            
+            const transaction = db.transaction(['products'], 'readwrite');
+            const store = transaction.objectStore('products');
+            
+            const product = {
+                name: name,
+                price: price,
+                quantity: quantity,
+                date: new Date().toISOString()
+            };
+            
+            const request = store.add(product);
+            
+            request.onsuccess = function(event) {
+                // Log confirmation to console with the new ID
+                console.log('Product saved successfully with ID:', event.target.result);
+                
+                // Verify storage by retrieving all products
+                const verifyTxn = db.transaction(['products'], 'readonly');
+                const verifyStore = verifyTxn.objectStore('products');
+                const getAllReq = verifyStore.getAll();
+                
+                getAllReq.onsuccess = function() {
+                    console.log('Current products in storage:', getAllReq.result);
+                };
+                
+                // Clear form
+                document.getElementById('productName').value = '';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productQuantity').value = '';
+                
+                // Update display
+                displayProducts();
+            };
+            
+            request.onerror = function(event) {
+                console.error('Error adding product:', event.target.error);
+            };
+        });
+        
+        // Display products
+        function displayProducts() {
+            const productsList = document.getElementById('productsList');
+            
+            const transaction = db.transaction(['products'], 'readonly');
+            const store = transaction.objectStore('products');
+            const request = store.getAll();
+            
+            request.onsuccess = function() {
+                const products = request.result;
+                
+                if (products.length === 0) {
+                    productsList.innerHTML = '<tr><td colspan="5">No products added yet.</td></tr>';
+                    return;
+                }
+                
+                let html = '';
+                products.forEach(product => {
+                    html += `
+                        <tr>
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>$${product.price.toFixed(2)}</td>
+                            <td>${product.quantity}</td>
+                            <td>
+                                <button onclick="deleteProduct(${product.id})">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                productsList.innerHTML = html;
+            };
+            
+            request.onerror = function(event) {
+                console.error('Error getting products:', event.target.error);
+            };
+        }
+        
+        // Delete product
+        function deleteProduct(id) {
+            const transaction = db.transaction(['products'], 'readwrite');
+            const store = transaction.objectStore('products');
+            const request = store.delete(id);
+            
+            request.onsuccess = function() {
+                displayProducts();
+            };
+            
+            request.onerror = function(event) {
+                console.error('Error deleting product:', event.target.error);
+            };
+        }
+        
+        // Clear all products
+        document.getElementById('clearProducts').addEventListener('click', function() {
+            if (confirm('Are you sure you want to delete all products?')) {
+                const transaction = db.transaction(['products'], 'readwrite');
+                const store = transaction.objectStore('products');
+                const request = store.clear();
+                
+                request.onsuccess = function() {
+                    displayProducts();
+                };
+                
+                request.onerror = function(event) {
+                    console.error('Error clearing products:', event.target.error);
+                };
+            }
+        });
+
+        // Add console shortcut functions to check data anytime
+        console.log('DATA CHECKING FUNCTIONS:');
+        console.log('- checkNotes() - Show all notes in localStorage');
+        console.log('- checkProducts() - Show all products in IndexedDB');
+
+        // Global functions to check data storage
+        window.checkNotes = function() {
+            const notes = JSON.parse(localStorage.getItem('notes') || '[]');
+            console.log('STORED NOTES:', notes);
+            return notes;
+        };
+        
+        window.checkProducts = function() {
+            if (!db) {
+                console.error('Database not initialized yet');
+                return;
+            }
+            
+            const transaction = db.transaction(['products'], 'readonly');
+            const store = transaction.objectStore('products');
+            const request = store.getAll();
+            
+            request.onsuccess = function() {
+                console.log('STORED PRODUCTS:', request.result);
+            };
+            
+            request.onerror = function(event) {
+                console.error('Error checking products:', event.target.error);
+            };
+        };
+    </script>
+</body>
+</html> 
