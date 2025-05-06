@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management | Course Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="BMU Logo">
+        </div>
+        
+        <ul class="nav-menu">
+            <!-- <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li> -->
+            <li class="nav-item">
+                <a href="courses.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="faculty.html" class="nav-link">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Faculty</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="students.html" class="nav-link active">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="timetable.html" class="nav-link ">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Timetable</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="classes.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Classes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="results.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Results</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Student Management</h1>
+            <!-- <div class="notification-area">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="message-icon">
+                    <i class="fas fa-comment"></i>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- Student Actions -->
+        <div style="text-align: right; margin-bottom: 20px;">
+            <button class="btn btn-primary" data-modal="addStudentModal">
+                <i class="fas fa-plus"></i> Create Student
+            </button>
+            <button class="btn btn-primary" style="margin-left: 10px;" data-modal="assignCourseModal">
+                <i class="fas fa-book"></i> Assign Courses
+            </button>
+        </div>
+
+        <!-- View/Search Student Details -->
+        <div class="content-panel" style="margin-bottom: 20px; padding: 15px;">
+            <h2>View/Search Student Details</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                <div style="flex: 2; min-width: 200px;">
+                    <input type="text" id="studentSearch" class="form-control" placeholder="Search students by name, ID, or email...">
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <select id="programFilter" class="form-control">
+                        <option value="">All Programs</option>
+                        <option value="B.Tech CSE">B.Tech CSE</option>
+                        <option value="B.Tech IT">B.Tech IT</option>
+                        <option value="B.Tech ECE">B.Tech ECE</option>
+                        <option value="BCA">BCA</option>
+                        <option value="MCA">MCA</option>
+                        <option value="M.Tech CSE">M.Tech CSE</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 150px;">
+                    <select id="yearFilter" class="form-control">
+                        <option value="">All Years</option>
+                        <option value="1">First Year</option>
+                        <option value="2">Second Year</option>
+                        <option value="3">Third Year</option>
+                        <option value="4">Fourth Year</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: flex-end; min-width: 120px;">
+                    <button class="btn btn-primary" id="searchStudentsBtn">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students List -->
+        <div class="content-panel">
+            <h2>Student Records</h2>
+            <table class="data-table" id="studentTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Program</th>
+                        <th>Year</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <!-- <tbody>
+                    <tr>
+                        <td>STU001</td>
+                        <td>Akash Sharma</td>
+                        <td>B.Tech CSE</td>
+                        <td>3</td>
+                        <td>akash.s@bmu.edu</td>
+                        <td>
+                            <button class="action-btn" title="View Student" data-action="view" data-id="STU001">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" title="Update Student" data-action="edit" data-id="STU001">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="Delete Student" data-action="delete" data-id="STU001">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Courses" data-action="assign" data-id="STU001">
+                                <i class="fas fa-book"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>STU002</td>
+                        <td>Akshit Patel</td>
+                        <td>B.Tech CSE</td>
+                        <td>3</td>
+                        <td>akshit.p@bmu.edu</td>
+                        <td>
+                            <button class="action-btn" title="View Student" data-action="view" data-id="STU002">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" title="Update Student" data-action="edit" data-id="STU002">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="Delete Student" data-action="delete" data-id="STU002">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Courses" data-action="assign" data-id="STU002">
+                                <i class="fas fa-book"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>STU003</td>
+                        <td>Palak Gupta</td>
+                        <td>B.Tech CSE</td>
+                        <td>3</td>
+                        <td>palak.g@bmu.edu</td>
+                        <td>
+                            <button class="action-btn" title="View Student" data-action="view" data-id="STU003">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" title="Update Student" data-action="edit" data-id="STU003">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="Delete Student" data-action="delete" data-id="STU003">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Courses" data-action="assign" data-id="STU003">
+                                <i class="fas fa-book"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>STU004</td>
+                        <td>Ketan Mishra</td>
+                        <td>B.Tech CSE</td>
+                        <td>3</td>
+                        <td>ketan.m@bmu.edu</td>
+                        <td>
+                            <button class="action-btn" title="View Student" data-action="view" data-id="STU004">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" title="Update Student" data-action="edit" data-id="STU004">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="Delete Student" data-action="delete" data-id="STU004">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Courses" data-action="assign" data-id="STU004">
+                                <i class="fas fa-book"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>STU005</td>
+                        <td>Rahul Singh</td>
+                        <td>B.Tech IT</td>
+                        <td>2</td>
+                        <td>rahul.s@bmu.edu</td>
+                        <td>
+                            <button class="action-btn" title="View Student" data-action="view" data-id="STU005">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" title="Update Student" data-action="edit" data-id="STU005">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="Delete Student" data-action="delete" data-id="STU005">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="action-btn" title="Assign Courses" data-action="assign" data-id="STU005">
+                                <i class="fas fa-book"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody> -->
+            </table>
+        </div>
+
+        <!-- Create Student Modal -->
+        <div id="addStudentModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Create New Student</h2>
+                <form id="addStudentForm">
+                    <div class="form-group">
+                        <label for="studentId">Student ID</label>
+                        <input type="text" id="studentId" name="studentId" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="program">Program</label>
+                        <select id="program" name="program" class="form-control" required>
+                            <option value="">Select Program</option>
+                            <option value="B.Tech CSE">B.Tech CSE</option>
+                            <option value="B.Tech IT">B.Tech IT</option>
+                            <option value="B.Tech ECE">B.Tech ECE</option>
+                            <option value="BCA">BCA</option>
+                            <option value="MCA">MCA</option>
+                            <option value="M.Tech CSE">M.Tech CSE</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <select id="year" name="year" class="form-control" required>
+                            <option value="">Select Year</option>
+                            <option value="1">First Year</option>
+                            <option value="2">Second Year</option>
+                            <option value="3">Third Year</option>
+                            <option value="4">Fourth Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Student</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- View Student Modal -->
+        <div id="viewStudentModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Student Details</h2>
+                <div id="studentDetails">
+                    <div class="detail-row">
+                        <div class="detail-label">Student ID:</div>
+                        <div class="detail-value" id="view-studentId">STU001</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div class="detail-value" id="view-studentName">Akash Sharma</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Program:</div>
+                        <div class="detail-value" id="view-program">B.Tech CSE</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Year:</div>
+                        <div class="detail-value" id="view-year">3</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Email:</div>
+                        <div class="detail-value" id="view-email">akash.s@bmu.edu</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Phone:</div>
+                        <div class="detail-value" id="view-phone">+91 98765 43210</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Date of Birth:</div>
+                        <div class="detail-value" id="view-dob">15 Aug 2001</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Address:</div>
+                        <div class="detail-value" id="view-address">123 Main Street, New Delhi</div>
+                    </div>
+                    
+                    <h3 style="margin-top: 20px;">Enrolled Courses</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Semester</th>
+                                <th>Faculty</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CSE2709</td>
+                                <td>Computer Organization and Architecture</td>
+                                <td>Semester 3</td>
+                                <td>Dr. Satyendr Singh</td>
+                                <td><span class="status submitted">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>CSE3005</td>
+                                <td>Software Engineering</td>
+                                <td>Semester 3</td>
+                                <td>Dr. Nishtha Phutela</td>
+                                <td><span class="status submitted">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>CSE3709</td>
+                                <td>Mobile Application Development</td>
+                                <td>Semester 3</td>
+                                <td>Mr. Gautam Gupta</td>
+                                <td><span class="status submitted">Active</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assign Courses Modal -->
+        <div id="assignCourseModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Assign Courses to Student</h2>
+                <form id="assignCourseForm">
+                    <div class="form-group">
+                        <label for="studentSelect">Select Student</label>
+                        <select id="studentSelect" name="studentSelect" class="form-control" required>
+                            <option value="">Select Student</option>
+                            <option value="STU001">STU001 - Akash Sharma</option>
+                            <option value="STU002">STU002 - Akshit Patel</option>
+                            <option value="STU003">STU003 - Palak Gupta</option>
+                            <option value="STU004">STU004 - Ketan Mishra</option>
+                            <option value="STU005">STU005 - Rahul Singh</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Courses to Assign</label>
+                        <div style="margin-top: 10px;">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="course1" name="courses" value="CSE2709">
+                                <label for="course1">CSE2709 - Computer Organization and Architecture</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="course2" name="courses" value="CSE3005">
+                                <label for="course2">CSE3005 - Software Engineering</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="course3" name="courses" value="CSE3709">
+                                <label for="course3">CSE3709 - Mobile Application Development</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="course4" name="courses" value="PSP2709">
+                                <label for="course4">PSP2709 - Design Thinking</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="course5" name="courses" value="CSE2032">
+                                <label for="course5">CSE2032 - Machine Learning</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="semester">Semester</label>
+                        <select id="semester" name="semester" class="form-control" required>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3" selected>Semester 3</option>
+                            <option value="4">Semester 4</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Assign Courses</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/students.js"></script>
+    <script>
+        // Initialize search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize student database
+            studentDB.init();
+            
+            // Function to view student details
+            function viewStudent(id) {
+                const student = studentDB.getStudentById(id);
+                if (!student) return;
+                
+                // Populate student details in modal
+                document.getElementById('view-studentId').textContent = student.id;
+                document.getElementById('view-studentName').textContent = `${student.firstName} ${student.lastName}`;
+                document.getElementById('view-program').textContent = student.program || '';
+                document.getElementById('view-year').textContent = student.year || '';
+                document.getElementById('view-email').textContent = student.email || '';
+                document.getElementById('view-phone').textContent = student.phone || '';
+                document.getElementById('view-dob').textContent = student.dob || '';
+                document.getElementById('view-address').textContent = student.address || '';
+                
+                // Show enrolled courses
+                const enrolledCourses = studentDB.getEnrolledCourses(id);
+                const coursesTable = document.querySelector('#viewStudentModal table.data-table tbody');
+                coursesTable.innerHTML = '';
+                
+                if (enrolledCourses.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="5">No courses enrolled.</td>';
+                    coursesTable.appendChild(row);
+                } else {
+                    enrolledCourses.forEach(course => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${course.courseCode}</td>
+                            <td>${course.courseCode}</td>
+                            <td>Semester ${course.semester}</td>
+                            <td>-</td>
+                            <td><span class="status submitted">Active</span></td>
+                        `;
+                        coursesTable.appendChild(row);
+                    });
+                }
+                
+                openModal('viewStudentModal');
+            }
+            
+            // Function to update student table
+            function updateStudentTable(students = null) {
+                const table = document.getElementById('studentTable');
+                if (!table) return;
+                
+                // Create tbody if it doesn't exist
+                let tbody = table.querySelector('tbody');
+                if (!tbody) {
+                    tbody = document.createElement('tbody');
+                    table.appendChild(tbody);
+                } else {
+                    tbody.innerHTML = ''; // Clear existing rows
+                }
+                
+                // Get students if not provided
+                const studentList = students || studentDB.getAllStudents();
+                
+                if (studentList.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="6">No students found.</td>';
+                    tbody.appendChild(row);
+                } else {
+                    // Add student rows
+                    studentList.forEach(student => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${student.id}</td>
+                            <td>${student.firstName} ${student.lastName}</td>
+                            <td>${student.program || ''}</td>
+                            <td>${student.year || ''}</td>
+                            <td>${student.email || ''}</td>
+                            <td>
+                                <button class="action-btn" title="View Student" onclick="viewStudent('${student.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn" title="Update Student" onclick="editStudent('${student.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn" title="Delete Student" onclick="deleteStudent('${student.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="action-btn" title="Assign Courses" onclick="assignCoursesToStudent('${student.id}')">
+                                    <i class="fas fa-book"></i>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            }
+            
+            // Initial table update
+            updateStudentTable();
+            
+            // Form submissions
+            const addStudentForm = document.getElementById('addStudentForm');
+            if (addStudentForm) {
+                addStudentForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const student = {
+                        id: formData.get('studentId'),
+                        firstName: formData.get('firstName'),
+                        lastName: formData.get('lastName'),
+                        program: formData.get('program'),
+                        year: formData.get('year'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone'),
+                        dob: formData.get('dob'),
+                        address: formData.get('address')
+                    };
+                    
+                    const editId = this.dataset.editId;
+                    
+                    if (editId) {
+                        // Update existing student
+                        if (studentDB.updateStudent(editId, student)) {
+                            alert('Student updated successfully!');
+                            const submitButton = this.querySelector('button[type="submit"]');
+                            if (submitButton) submitButton.textContent = 'Create Student';
+                            this.dataset.editId = '';
+                        } else {
+                            alert('Failed to update student.');
+                        }
+                    } else {
+                        // Create new student
+                        const newStudent = studentDB.createStudent(student);
+                        if (newStudent) {
+                            alert('Student created successfully!');
+                        } else {
+                            alert('Failed to create student. Student ID might already exist.');
+                        }
+                    }
+                    
+                    // Reset form and update table
+                    this.reset();
+                    closeModal('addStudentModal');
+                    updateStudentTable();
+                });
+            }
+            
+            // Assign course form submission
+            const assignCourseForm = document.getElementById('assignCourseForm');
+            if (assignCourseForm) {
+                assignCourseForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const studentId = document.getElementById('studentSelect').value;
+                    const semester = document.getElementById('semester').value;
+                    const selectedCourses = Array.from(document.querySelectorAll('input[name="courses"]:checked'))
+                        .map(checkbox => checkbox.value);
+                    
+                    if (!studentId || selectedCourses.length === 0) {
+                        alert('Please select a student and at least one course.');
+                        return;
+                    }
+                    
+                    let success = true;
+                    selectedCourses.forEach(courseCode => {
+                        const enrollment = {
+                            studentId: studentId,
+                            courseCode: courseCode,
+                            semester: semester,
+                            enrolledAt: new Date().toISOString()
+                        };
+                        
+                        if (!studentDB.assignCourse(enrollment)) {
+                            success = false;
+                        }
+                    });
+                    
+                    if (success) {
+                        alert('Courses assigned successfully!');
+                        this.reset();
+                        closeModal('assignCourseModal');
+                    } else {
+                        alert('Some courses could not be assigned. They might already be assigned to the student.');
+                    }
+                });
+            }
+            
+            // Edit student function (to be called from button)
+            window.editStudent = function(id) {
+                const student = studentDB.getStudentById(id);
+                if (!student) return;
+                
+                const form = document.getElementById('addStudentForm');
+                form.dataset.editId = id;
+                
+                document.getElementById('studentId').value = student.id;
+                document.getElementById('firstName').value = student.firstName || '';
+                document.getElementById('lastName').value = student.lastName || '';
+                document.getElementById('program').value = student.program || '';
+                document.getElementById('year').value = student.year || '';
+                document.getElementById('email').value = student.email || '';
+                document.getElementById('phone').value = student.phone || '';
+                document.getElementById('dob').value = student.dob || '';
+                document.getElementById('address').value = student.address || '';
+                
+                const submitButton = form.querySelector('button[type="submit"]');
+                if (submitButton) submitButton.textContent = 'Update Student';
+                
+                openModal('addStudentModal');
+            };
+            
+            // Delete student function (to be called from button)
+            window.deleteStudent = function(id) {
+                if (confirm('Are you sure you want to delete this student?')) {
+                    if (studentDB.deleteStudent(id)) {
+                        alert('Student deleted successfully!');
+                        updateStudentTable();
+                    } else {
+                        alert('Failed to delete student.');
+                    }
+                }
+            };
+            
+            // Assign courses function (to be called from button)
+            window.assignCoursesToStudent = function(id) {
+                const student = studentDB.getStudentById(id);
+                if (!student) return;
+                
+                document.getElementById('studentSelect').value = id;
+                openModal('assignCourseModal');
+            };
+            
+            // View student function (to be called from button)
+            window.viewStudent = viewStudent;
+        });
+        
+        // Modal functionality
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Setup search function
+        function setupSearch(inputId, tableId, columns) {
+            const searchInput = document.getElementById(inputId);
+            if (!searchInput) return;
+            
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const table = document.getElementById(tableId);
+                const rows = table.querySelectorAll('tbody tr');
+                
+                rows.forEach(row => {
+                    let match = false;
+                    columns.forEach(colIndex => {
+                        const cell = row.cells[colIndex];
+                        if (cell && cell.textContent.toLowerCase().includes(searchTerm)) {
+                            match = true;
+                        }
+                    });
+                    row.style.display = match ? '' : 'none';
+                });
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -345,9 +345,21 @@
     </div>
 
     <!-- JavaScript -->
+<<<<<<< Updated upstream
+=======
+    <script src="js/courses.js"></script>
+>>>>>>> Stashed changes
     <script src="js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Add modal open functionality for buttons with data-modal attribute
+            document.querySelectorAll('[data-modal]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal');
+                    openModal(modalId);
+                });
+            });
+
             // Initialize search functionality
             setupSearch('courseSearch', 'courseTable', [0, 1, 4, 5]); // Search in code, name, faculty, semester columns
             
@@ -488,13 +500,26 @@
             
             // Modal functionality
             function openModal(modalId) {
-                document.getElementById(modalId).style.display = 'block';
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'block';
+                }
+            }
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                }
             }
             
             // Close modal when clicking the X
             document.querySelectorAll('.close-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    this.closest('.modal').style.display = 'none';
+                    const modal = this.closest('.modal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
                 });
             });
             

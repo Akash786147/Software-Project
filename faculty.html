@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Management | Course Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+        .select2-container .select2-selection--single {
+            height: 38px;
+            border: 1px solid #ced4da;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 38px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="BMU Logo">
+        </div>
+        
+        <ul class="nav-menu">
+            <!-- <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li> -->
+            <li class="nav-item">
+                <a href="courses.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="faculty.html" class="nav-link active">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Faculty</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="students.html" class="nav-link">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="timetable.html" class="nav-link ">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Timetable</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="classes.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Classes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="results.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Results</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">Faculty Management</h1>
+            <!-- <div class="notification-area">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="message-icon">
+                    <i class="fas fa-comment"></i>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- Faculty Actions -->
+        <div style="text-align: right; margin-bottom: 20px;">
+            <button class="btn btn-primary" data-modal="addFacultyModal">
+                <i class="fas fa-plus"></i> Create Teacher
+            </button>
+            <button class="btn btn-primary" style="margin-left: 10px;" data-modal="assignCourseModal">
+                <i class="fas fa-tasks"></i> Assign Course
+            </button>
+        </div>
+
+        <!-- Faculty Search -->
+        <div class="content-panel" style="margin-bottom: 20px; padding: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; width: 60%;">
+                    <input type="text" id="facultySearch" class="form-control" placeholder="Search faculty by name, department, or ID..." style="margin-right: 10px;">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Faculty List -->
+        <div class="content-panel">
+            <h2>Faculty Members</h2>
+            <table class="data-table" id="facultyTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>School</th>
+                        <th>Department</th>
+                        <th>Designation</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="addFacultyModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Create New Teacher</h2>
+                <form id="addFacultyForm">
+                    <div class="form-group">
+                        <label for="facultyName">Full Name</label>
+                        <input type="text" id="facultyName" name="facultyName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="school">School</label>
+                        <select id="school" name="school" class="form-control" required>
+                            <option value="">Select School</option>
+                            <option value="SOET">School of Engineering and Technology (SOET)</option>
+                            <option value="SOM">School of Management (SOM)</option>
+                            <option value="SOLS">School of Liberal Studies (SOLS)</option>
+                            <option value="SOL">School of Law (SOL)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select id="department" name="department" class="form-control" required>
+                            <option value="">Select Department</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="designation">Designation</label>
+                        <select id="designation" name="designation" class="form-control" required>
+                            <option value="">Select Designation</option>
+                            <option value="Professor">Professor</option>
+                            <option value="Associate Professor">Associate Professor</option>
+                            <option value="Assistant Professor">Assistant Professor</option>
+                            <option value="Lecturer">Lecturer</option>
+                            <option value="Visiting Faculty">Visiting Faculty</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="joiningDate">Joining Date</label>
+                        <input type="date" id="joiningDate" name="joiningDate" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Teacher</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- View Teacher Modal -->
+        <div id="viewFacultyModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Teacher Details</h2>
+                <div id="facultyDetails">
+                    <div class="detail-row">
+                        <div class="detail-label">Faculty ID:</div>
+                        <div class="detail-value" id="view-facultyId">FAC001</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div class="detail-value" id="view-facultyName">Dr. Satyendr Singh</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Department:</div>
+                        <div class="detail-value" id="view-department">Computer Science</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Designation:</div>
+                        <div class="detail-value" id="view-designation">Associate Professor</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Email:</div>
+                        <div class="detail-value" id="view-email">satyendr.singh@bmu.edu</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Phone:</div>
+                        <div class="detail-value" id="view-phone">+91 98765 43210</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Joining Date:</div>
+                        <div class="detail-value" id="view-joiningDate">15 Aug 2018</div>
+                    </div>
+                    
+                    <h3 style="margin-top: 20px;">Assigned Courses</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Credits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CSE2709</td>
+                                <td>Computer Organization and Architecture</td>
+                                <td>3.0</td>
+                            </tr>
+                            <tr>
+                                <td>CSE4002</td>
+                                <td>Advanced Computer Architecture</td>
+                                <td>4.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assign Course Modal -->
+        <div id="assignCourseModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Assign Course to Faculty</h2>
+                <form id="assignCourseForm">
+                    <div class="form-group">
+                        <label for="facultySelect">Select Faculty</label>
+                        <select id="facultySelect" name="facultySelect" class="form-control select2" required>
+                            <option value="">Search and select faculty...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseSelect">Select Course</label>
+                        <select id="courseSelect" name="courseSelect" class="form-control select2" required>
+                            <option value="">Search and select course...</option>
+                            <option value="CSE2709">CSE2709 - Computer Organization and Architecture</option>
+                            <option value="CSE3005">CSE3005 - Software Engineering</option>
+                            <option value="CSE3709">CSE3709 - Mobile Application Development</option>
+                            <option value="PSP2709">PSP2709 - Design Thinking</option>
+                            <option value="CSE2032">CSE2032 - Machine Learning</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Assign Course</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/faculty.js"></script>
+    <script src="js/main.js"></script>
+    <!-- Add jQuery and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</body>
+</html> 
