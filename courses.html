@@ -255,165 +255,161 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="js/cources.js"></script>
+    <script src="js/courses.js"></script>
+    <script src="js/main.js"></script>
     <script>
+        // Course Database Implementation
+        window.courseDB = {
+            init() {
+                console.log('Initializing course database...');
+                if (!localStorage.getItem('courses')) {
+                    console.log('Creating new courses array in localStorage');
+                    localStorage.setItem('courses', JSON.stringify([]));
+                }
+            },
+
+            getAllCourses() {
+                return JSON.parse(localStorage.getItem('courses')) || [];
+            },
+
+            getCourseByCode(code) {
+                return this.getAllCourses().find(course => course.code === code);
+            },
+
+            createCourse(courseData) {
+                const courses = this.getAllCourses();
+                
+                // Check if course code already exists
+                if (courses.some(course => course.code === courseData.code)) {
+                    return null;
+                }
+
+                const newCourse = {
+                    code: courseData.code,
+                    name: courseData.name,
+                    credits: courseData.credits,
+                    sessions: courseData.sessions,
+                    faculty: courseData.faculty,
+                    semester: courseData.semester,
+                    createdAt: new Date().toISOString()
+                };
+
+                courses.push(newCourse);
+                localStorage.setItem('courses', JSON.stringify(courses));
+                return newCourse;
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize course database
+            courseDB.init();
+
+            // Add modal open functionality for buttons with data-modal attribute
+            document.querySelectorAll('[data-modal]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal');
+                    openModal(modalId);
+                });
+            });
+
             // Initialize search functionality
-            setupSearch('courseSearch', 'courseTable', [0, 1, 4, 5]); // Search in code, name, faculty, semester columns
+            setupSearch('courseSearch', 'courseTable', [0, 1, 4, 5]);
 
-            // Handle View Course action
-            document.querySelectorAll('[data-action="view"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const courseId = this.getAttribute('data-id');
-                    // Fetch course details and populate the view modal
-                    openModal('viewCourseModal');
-                });
-            });
+            // Add Course Form Submission
+            const addCourseForm = document.getElementById('addCourseForm');
+            if (addCourseForm) {
+                addCourseForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const courseData = {
+                        code: formData.get('courseCode'),
+                        name: formData.get('courseName'),
+                        credits: parseInt(formData.get('credits')),
+                        sessions: parseInt(formData.get('sessions')),
+                        faculty: formData.get('faculty'),
+                        semester: formData.get('semester')
+                    };
 
-            // Handle Update Course action
-            document.querySelectorAll('[data-action="edit"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const courseId = this.getAttribute('data-id');
-
-                    // Sample data - in a real app, this would be fetched from a database
-                    let courseData;
-                    const rows = document.querySelectorAll('#courseTable tbody tr');
-                    rows.forEach(row => {
-                        const code = row.cells[0].textContent;
-                        if (code === courseId) {
-                            courseData = {
-                                id: code,
-                                code: code,
-                                name: row.cells[1].textContent,
-                                sessions: row.cells[2].textContent,
-                                credits: row.cells[3].textContent,
-                                faculty: row.cells[4].textContent,
-                                semester: row.cells[5].textContent.replace('Semester ', '')
-                            };
-                        }
-                    });
-
-                    // Populate the update form with the course data
-                    if (courseData) {
-                        document.getElementById('update-id').value = courseData.id;
-                        document.getElementById('update-courseCode').value = courseData.code;
-                        document.getElementById('update-courseName').value = courseData.name;
-                        document.getElementById('update-sessions').value = courseData.sessions;
-                        document.getElementById('update-credits').value = courseData.credits;
-                        document.getElementById('update-faculty').value = courseData.faculty;
-                        document.getElementById('update-semester').value = courseData.semester;
-                    }
-
-                    openModal('updateCourseModal');
-                });
-            });
-
-            // Handle Delete Course action
-            document.querySelectorAll('[data-action="delete"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const courseId = this.getAttribute('data-id');
-                    if (confirm('Are you sure you want to delete this course?')) {
-                        // Code to delete course
-                        console.log('Deleting course with ID:', courseId);
-                        // In a real application, this would make an API call to delete the course
-                        // For demo purposes, we'll just remove the row from the table
-                        const row = this.closest('tr');
-                        row.remove();
-                    }
-                });
-            });
-
-            // Filter courses by semester using data-semester attribute
-            document.getElementById('semesterFilter').addEventListener('change', function() {
-                const semesterValue = this.value;
-                const rows = document.querySelectorAll('#courseTable tbody tr');
-                rows.forEach(row => {
-                    const rowSemester = row.getAttribute('data-semester');
-                    if (semesterValue === '' || rowSemester === semesterValue) {
-                        row.style.display = '';
+                    const result = courseDB.createCourse(courseData);
+                    if (result) {
+                        alert('Course added successfully!');
+                        this.reset();
+                        updateCourseTable();
+                        closeModal('addCourseModal');
                     } else {
-                        row.style.display = 'none';
+                        alert('Error: Course code already exists!');
                     }
                 });
-            });
-
-            // Custom Add Course handler to add course to table and filter by semester
-            document.getElementById('addCourseForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const code = document.getElementById('courseCode').value;
-                const name = document.getElementById('courseName').value;
-                const sessions = document.getElementById('sessions').value;
-                const credits = document.getElementById('credits').value;
-                const faculty = document.getElementById('faculty').value;
-                const semester = document.getElementById('semester').value;
-
-                // Create new row
-                const tbody = document.querySelector('#courseTable tbody');
-                const tr = document.createElement('tr');
-                tr.setAttribute('data-semester', semester);
-                tr.innerHTML = `
-                    <td>${code}</td>
-                    <td>${name}</td>
-                    <td>${sessions}</td>
-                    <td>${credits}</td>
-                    <td>${faculty}</td>
-                    <td>
-                        <button class="action-btn" title="View Course" data-action="view" data-id="${code}">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="action-btn" title="Update Course" data-action="edit" data-id="${code}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn" title="Delete Course" data-action="delete" data-id="${code}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-
-                // Re-attach event listeners for new row
-                tr.querySelector('[data-action="view"]').addEventListener('click', function() {
-                    openModal('viewCourseModal');
-                });
-                tr.querySelector('[data-action="edit"]').addEventListener('click', function() {
-                    // You may want to implement edit logic here
-                    openModal('updateCourseModal');
-                });
-                tr.querySelector('[data-action="delete"]').addEventListener('click', function() {
-                    if (confirm('Are you sure you want to delete this course?')) {
-                        tr.remove();
-                    }
-                });
-
-                // Hide modal and reset form
-                document.getElementById('addCourseModal').style.display = 'none';
-                this.reset();
-
-                // Trigger semester filter to update view
-                document.getElementById('semesterFilter').dispatchEvent(new Event('change'));
-            });
-
-            // Keep updateCourseForm handler if needed
-            handleFormSubmit('updateCourseForm', 'updateCourse', 'courses.html');
-
-            // Modal functionality
-            function openModal(modalId) {
-                document.getElementById(modalId).style.display = 'block';
             }
 
-            // Close modal when clicking the X
-            document.querySelectorAll('.close-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.modal').style.display = 'none';
-                });
-            });
+            // Update Course Table
+            function updateCourseTable() {
+                const tbody = document.querySelector('#courseTable tbody');
+                if (!tbody) return;
 
-            // Close modal when clicking outside the modal content
-            window.addEventListener('click', function(event) {
-                if (event.target.classList.contains('modal')) {
-                    event.target.style.display = 'none';
+                const courses = courseDB.getAllCourses();
+                tbody.innerHTML = '';
+
+                if (courses.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="6">No courses found.</td>';
+                    tbody.appendChild(row);
+                    return;
                 }
+
+                courses.forEach(course => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${course.code}</td>
+                        <td>${course.name}</td>
+                        <td>${course.sessions}</td>
+                        <td>${course.credits}</td>
+                        <td>${course.faculty}</td>
+                        <td>
+                            <button class="action-btn" title="View Course" onclick="viewCourse('${course.code}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" title="Update Course" onclick="editCourse('${course.code}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="Delete Course" onclick="deleteCourse('${course.code}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            // Initial table update
+            updateCourseTable();
+        });
+
+        // Modal functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.style.display = 'none';
+        }
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                if (modal) modal.style.display = 'none';
             });
+        });
+
+        // Close modal when clicking outside the modal content
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
         });
     </script>
 </body>
