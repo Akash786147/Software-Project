@@ -6,6 +6,23 @@
     <title>Faculty Management | Course Management System</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+        .select2-container .select2-selection--single {
+            height: 38px;
+            border: 1px solid #ced4da;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 38px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+    </style>
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -104,6 +121,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>School</th>
                         <th>Department</th>
                         <th>Designation</th>
                         <th>Email</th>
@@ -119,23 +137,23 @@
                 <h2>Create New Teacher</h2>
                 <form id="addFacultyForm">
                     <div class="form-group">
-                        <label for="facultyId">Faculty ID</label>
-                        <input type="text" id="facultyId" name="facultyId" class="form-control" required>
-                    </div>
-                    <div class="form-group">
                         <label for="facultyName">Full Name</label>
                         <input type="text" id="facultyName" name="facultyName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="school">School</label>
+                        <select id="school" name="school" class="form-control" required>
+                            <option value="">Select School</option>
+                            <option value="SOET">School of Engineering and Technology (SOET)</option>
+                            <option value="SOM">School of Management (SOM)</option>
+                            <option value="SOLS">School of Liberal Studies (SOLS)</option>
+                            <option value="SOL">School of Law (SOL)</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
                         <select id="department" name="department" class="form-control" required>
                             <option value="">Select Department</option>
-                            <option value="Computer Science">Computer Science</option>
-                            <option value="Information Technology">Information Technology</option>
-                            <option value="Design">Design</option>
-                            <option value="Electrical Engineering">Electrical Engineering</option>
-                            <option value="Mechanical Engineering">Mechanical Engineering</option>
-                            <option value="Management">Management</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -207,7 +225,6 @@
                             <tr>
                                 <th>Course Code</th>
                                 <th>Course Name</th>
-                                <th>Semester</th>
                                 <th>Credits</th>
                             </tr>
                         </thead>
@@ -215,13 +232,11 @@
                             <tr>
                                 <td>CSE2709</td>
                                 <td>Computer Organization and Architecture</td>
-                                <td>Semester 1</td>
                                 <td>3.0</td>
                             </tr>
                             <tr>
                                 <td>CSE4002</td>
                                 <td>Advanced Computer Architecture</td>
-                                <td>Semester 4</td>
                                 <td>4.0</td>
                             </tr>
                         </tbody>
@@ -238,33 +253,19 @@
                 <form id="assignCourseForm">
                     <div class="form-group">
                         <label for="facultySelect">Select Faculty</label>
-                        <select id="facultySelect" name="facultySelect" class="form-control" required>
-                            <option value="">Select Faculty</option>
-                            <option value="FAC001">FAC001 - Dr. Satyendr Singh</option>
-                            <option value="FAC002">FAC002 - Dr. Nishtha Phutela</option>
-                            <option value="FAC003">FAC003 - Mr. Gautam Gupta</option>
-                            <option value="FAC004">FAC004 - Mr. Avijit Chakarvarti</option>
-                            <option value="FAC005">FAC005 - Prof. Anantha Rao</option>
+                        <select id="facultySelect" name="facultySelect" class="form-control select2" required>
+                            <option value="">Search and select faculty...</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="courseSelect">Select Course</label>
-                        <select id="courseSelect" name="courseSelect" class="form-control" required>
-                            <option value="">Select Course</option>
+                        <select id="courseSelect" name="courseSelect" class="form-control select2" required>
+                            <option value="">Search and select course...</option>
                             <option value="CSE2709">CSE2709 - Computer Organization and Architecture</option>
                             <option value="CSE3005">CSE3005 - Software Engineering</option>
                             <option value="CSE3709">CSE3709 - Mobile Application Development</option>
                             <option value="PSP2709">PSP2709 - Design Thinking</option>
                             <option value="CSE2032">CSE2032 - Machine Learning</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="semester">Semester</label>
-                        <select id="semester" name="semester" class="form-control" required>
-                            <option value="1">Semester 1</option>
-                            <option value="2">Semester 2</option>
-                            <option value="3">Semester 3</option>
-                            <option value="4">Semester 4</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Assign Course</button>
@@ -275,60 +276,8 @@
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
-    <script>
-        // Initialize search functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            setupSearch('facultySearch', 'facultyTable', [1, 2, 3, 4]); // Search in name, department, designation, email columns
-            
-            // Handle View Teacher action
-            document.querySelectorAll('[data-action="view"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const facultyId = this.getAttribute('data-id');
-                    // Fetch faculty details and populate the view modal
-                    openModal('viewFacultyModal');
-                });
-            });
-            
-            // Handle Update Teacher action
-            document.querySelectorAll('[data-action="edit"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const facultyId = this.getAttribute('data-id');
-                    // Fetch faculty details and populate the edit form
-                    openModal('addFacultyModal');
-                    // Additional logic to populate form with existing data
-                });
-            });
-            
-            // Handle Remove Teacher action
-            document.querySelectorAll('[data-action="delete"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const facultyId = this.getAttribute('data-id');
-                    if (confirm('Are you sure you want to remove this teacher?')) {
-                        // Code to remove teacher
-                        console.log('Removing teacher with ID:', facultyId);
-                    }
-                });
-            });
-            
-            // Handle Assign Course action
-            document.querySelectorAll('[data-action="assign"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const facultyId = this.getAttribute('data-id');
-                    // Pre-select the faculty in the assign course form
-                    document.getElementById('facultySelect').value = facultyId;
-                    openModal('assignCourseModal');
-                });
-            });
-            
-            // Form submissions
-            handleFormSubmit('addFacultyForm', 'faculty', 'faculty.html');
-            handleFormSubmit('assignCourseForm', 'assignCourse', 'faculty.html');
-            
-            // Modal functionality
-            function openModal(modalId) {
-                document.getElementById(modalId).style.display = 'block';
-            }
-        });
-    </script>
+    <!-- Add jQuery and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 </html> 
